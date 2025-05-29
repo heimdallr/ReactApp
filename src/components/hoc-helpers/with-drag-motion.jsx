@@ -1,0 +1,28 @@
+import { motion } from "framer-motion";
+
+const WithDragMotion = (props) => {
+  const { innerWidth: width, innerHeight: height } = window;
+  const dragBorders = {
+    left: -width / 2,
+    right: width / 2,
+    top: -height / 2,
+    bottom: height / 2,
+  };
+  return (
+    <motion.div
+      style={{
+        position: "fixed",
+        top: "30%",
+        left: "30%",
+        zIndex: 1,
+      }}
+      drag
+      dragConstraints={dragBorders}
+      whileDrag={{ scale: 1.03 }}
+    >
+      {props.children}
+    </motion.div>
+  );
+};
+
+export default WithDragMotion;

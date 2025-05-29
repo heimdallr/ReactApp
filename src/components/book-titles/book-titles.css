@@ -1,0 +1,12 @@
+.bookTitles {
+    height: calc(100vh - 8rem);
+    margin: 1rem 0rem;
+    background-image: linear-gradient(rgba(36, 42, 46, 0.8),
+            rgba(36, 42, 46, 0.8));
+    background-size: cover;
+    background-position: center;
+    padding: 0rem 0rem;
+    overflow: scroll;
+    scrollbar-color: var(--color-dark--2) rgba(36, 42, 46, 0.8);
+    scrollbar-width: thin;
+}

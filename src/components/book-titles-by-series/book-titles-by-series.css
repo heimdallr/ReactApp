@@ -1,0 +1,12 @@
+.bookTitlesBySeries {
+    height: calc(100vh - 8rem);
+    margin-left: 0.5rem;
+    background-image: linear-gradient(rgba(36, 42, 46, 0.8),
+            rgba(36, 42, 46, 0.8));
+    background-size: cover;
+    background-position: center;
+    padding: 0rem;
+    overflow: auto;
+    scrollbar-color: var(--color-dark--2) rgba(36, 42, 46, 0.8);
+    scrollbar-width: thin;
+}

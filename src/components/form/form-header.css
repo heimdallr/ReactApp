@@ -1,0 +1,19 @@
+.hover-zoom:hover {
+    scale: 1.4;
+    transition: ease-in-out 0.3s;
+}
+
+.hover-zoom {
+    scale: 1;
+    transition: ease-in-out 0.3s;
+}
+
+.return-back-button:hover {
+    scale: 1.8;
+    transition: ease-in-out 0.3s;
+}
+
+.return-back-button {
+    scale: 1.5;
+    transition: ease-in-out 0.3s;
+}
