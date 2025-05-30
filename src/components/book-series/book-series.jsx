@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import Spinner from "../spinner";
 import BookTitlesBySeries from "../book-titles-by-series";
+import { withErrorBoundary } from "../hoc-helpers";
 
-export default class BookSeries extends Component {
+class BookSeries extends Component {
   state = {
     loading: false,
     searchTmp: "",
@@ -122,3 +123,5 @@ export default class BookSeries extends Component {
     );
   }
 }
+
+export default withErrorBoundary(BookSeries);

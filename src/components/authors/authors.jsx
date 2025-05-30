@@ -6,8 +6,9 @@ import { AnimatePresence } from "framer-motion";
 import Spinner from "../spinner";
 import BookTitles from "../book-titles";
 import BookTitlesByAuthor from "../book-titles-by-author";
+import { withErrorBoundary } from "../hoc-helpers";
 
-export default class Authors extends Component {
+class Authors extends Component {
   state = {
     loading: false,
     searchTmp: "",
@@ -79,7 +80,6 @@ export default class Authors extends Component {
 
   render() {
     const { loading, authorsList } = this.state;
-
     return (
       <React.Fragment>
         <div className="d-flex shadow mt-0 text-center">
@@ -122,3 +122,5 @@ export default class Authors extends Component {
     );
   }
 }
+
+export default withErrorBoundary(Authors);

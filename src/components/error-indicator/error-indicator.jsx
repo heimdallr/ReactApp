@@ -4,12 +4,8 @@ import "./error-indicator.css";
 const ErrorIndicator = ({ message }) => {
   return (
     <div className="error-indicator">
-      <div className="card shadow text-center d-flex">
-        <img
-          style={{ width: "100px", marginLeft: "auto", marginRight: "auto" }}
-          src="/img/error.png"
-          alt="errorImage"
-        />
+      <div className="card bg-dark shadow text-center d-flex">
+        <h1>😢</h1>
         <h4
           style={{
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.6)",

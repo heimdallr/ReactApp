@@ -13,7 +13,7 @@ const withErrorBoundary = (View) => {
 
     render() {
       if (this.state.hasError) {
-        return <ErrorIndicator />;
+        return <ErrorIndicator message={<button className="btn-danger">Что-то пошло не так...</button>} />;
       }
 
       return <View {...this.props} />;

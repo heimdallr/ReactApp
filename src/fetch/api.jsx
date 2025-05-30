@@ -12,7 +12,7 @@ class Api {
       }
       return await res.json();
     } catch (err) {
-      console.log(err, "My error message");
+      console.log(err, `Could not fetch ${url}`);
     }
   }
 
@@ -26,7 +26,7 @@ class Api {
       }
       return await res.blob();
     } catch (err) {
-      console.log(err, "My error message");
+      console.log(err, `Could not fetch ${url}`);
     }
   }
 

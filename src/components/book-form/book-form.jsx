@@ -1,7 +1,7 @@
 import "./book-form.css";
 import React, { Component } from "react";
 import Spinner from "../spinner";
-import { WithDragMotion } from "../hoc-helpers";
+import { WithDragMotion, withErrorBoundary } from "../hoc-helpers";
 import FormHeader from "../form/form-header";
 
 class BookForm extends Component {
@@ -207,4 +207,4 @@ class BookForm extends Component {
   }
 }
 
-export default BookForm;
+export default withErrorBoundary(BookForm);

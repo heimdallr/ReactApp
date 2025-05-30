@@ -4,8 +4,9 @@ import React, { Component } from "react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import Spinner from "../spinner";
+import { withErrorBoundary } from "../hoc-helpers";
 
-export default class BookTitlesBySeries extends Component {
+class BookTitlesBySeries extends Component {
   state = {
     loading: false,
     titlesList: [],
@@ -148,3 +149,5 @@ export default class BookTitlesBySeries extends Component {
     );
   }
 }
+
+export default withErrorBoundary(BookTitlesBySeries);

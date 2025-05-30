@@ -8,6 +8,7 @@ import Authors from "../authors";
 import BookTitles from "../book-titles";
 import BookSeries from "../book-series";
 import BookForm from "../book-form";
+import { withErrorBoundary } from "../hoc-helpers";
 
 class App extends Component {
   state = {
@@ -48,14 +49,9 @@ class App extends Component {
   };
 
   getRecords = () => {
-    // const { sortHeadID, sortRevers, search } = this.state;
     const { search } = this.state;
-
     this.setState({ searchTmp: search });
-    this.apiData
-      // .getItemList({ sortHeadID, sortRevers, search })
-      .getSearchStats({ search })
-      .then((res) => this.setState({ ...res, loading: false }));
+    this.apiData.getSearchStats({ search }).then((res) => this.setState({ ...res, loading: false }));
   };
 
   tableRecords = () => {
@@ -168,6 +164,7 @@ class App extends Component {
             {this.state.loading && <Spinner />}
           </div>
         </div>
+
         {authors || bookSeries || bookTitles ? (
           <div className="card shadow mt-2">
             <div className="card-title bg-secondary pl-1 pr-1 m-0">
@@ -228,4 +225,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withErrorBoundary(App);

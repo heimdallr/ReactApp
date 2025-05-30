@@ -4,8 +4,9 @@ import React, { Component } from "react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import Spinner from "../spinner";
+import { withErrorBoundary } from "../hoc-helpers";
 
-export default class BookTitles extends Component {
+class BookTitles extends Component {
   state = {
     loading: false,
     searchTmp: "",
@@ -160,3 +161,5 @@ export default class BookTitles extends Component {
     );
   }
 }
+
+export default withErrorBoundary(BookTitles);
