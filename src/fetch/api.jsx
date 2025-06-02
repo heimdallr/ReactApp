@@ -30,6 +30,20 @@ class Api {
     }
   }
 
+  async getText(url) {
+    try {
+      const res = await fetch(`${this._baseUrl}${url}`, {
+        credentials: "include",
+      });
+      if (!res.ok) {
+        throw new Error(`Could not fetch ${url}, received ${res.status}`);
+      }
+      return await res.text();
+    } catch (err) {
+      console.log(err, `Could not fetch ${url}`);
+    }
+  }
+
   async postData(url, data = []) {
     let controller = new AbortController();
     setTimeout(() => controller.abort(), 5000);

@@ -78,7 +78,6 @@ class BookSeries extends Component {
 
   render() {
     const { loading, seriesList } = this.state;
-
     return (
       <React.Fragment>
         <div className="d-flex shadow mt-0 text-center">

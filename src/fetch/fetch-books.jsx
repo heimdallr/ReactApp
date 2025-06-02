@@ -33,4 +33,8 @@ export default class FetchBooks {
   getBookForm = async ({ selectedItemID }) => {
     return await this.apiData.getResourse(`main/getBooks/getBookForm?selectedItemID=${selectedItemID}`);
   };
+
+  getBook = async ({ BookID }) => {
+    return await this.apiData.getText(`Images/fb2/${BookID}`);
+  };
 }

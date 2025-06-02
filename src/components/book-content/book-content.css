@@ -1,0 +1,10 @@
+.book-content {
+    min-width: 40rem;
+    max-width: 80vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow: auto;
+    scrollbar-color: var(--color-light--1) rgba(36, 42, 46, 0.8);
+    scrollbar-width: thin;
+    text-align: justify;
+}
