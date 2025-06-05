@@ -91,12 +91,13 @@ class BookForm extends Component {
     ) : (
       <span className="card bg-dark shadow border border-info rounded-lg">
         {/* <div className="" onPointerDownCapture={(e) => e.stopPropagation()}> */}
-        <div className="d-flex flex-row mb-1">
+        <div className="d-flex flex-row mb-1 justify-content-center">
           {this.state.displayBookContent ? (
-            <span className="btn btn-warning ml-3 pt-0 pb-0" onClick={this.handleBookContent}>
+            <span className="btn  btn-sm btn-warning ml-3 mt-1 pt-0 pb-0 mr-auto" onClick={this.handleBookContent}>
               Назад
             </span>
           ) : null}
+          <span id="progress"></span>
           <span
             className="ml-auto p-0 hover-zoom bg-info"
             onClick={() => {

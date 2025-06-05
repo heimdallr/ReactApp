@@ -7,4 +7,68 @@
     scrollbar-color: var(--color-light--1) rgba(36, 42, 46, 0.8);
     scrollbar-width: thin;
     text-align: justify;
+
+}
+
+p {
+    text-indent: 3rem;
+    margin: 0.2rem;
+}
+
+.title p {
+    text-indent: 0rem;
+
+}
+
+
+.book-content .title h2 {
+    -webkit-text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);
+    -moz-text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);
+    text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);
+}
+
+.epigraph {
+    border-radius: 15px;
+    margin-right: 3rem;
+    max-width: 60%;
+
+    background:
+        linear-gradient(180deg, rgba(248, 184, 139, 0) 20%, rgba(248, 184, 139, .1) 20%, rgba(248, 184, 139, .1) 40%, rgba(248, 184, 139, .2) 40%, rgba(248, 184, 139, .2) 60%, rgba(248, 184, 139, .4) 60%, rgba(248, 184, 139, .4) 80%, rgba(248, 184, 139, .5) 80%),
+        linear-gradient(45deg, rgba(250, 248, 132, .3) 20%, rgba(250, 248, 132, .4) 20%, rgba(250, 248, 132, .4) 40%, rgba(250, 248, 132, .5) 40%, rgba(250, 248, 132, .5) 60%, rgba(250, 248, 132, .6) 60%, rgba(250, 248, 132, .6) 80%, rgba(250, 248, 132, .7) 80%),
+        linear-gradient(-45deg, rgba(186, 237, 145, 0) 20%, rgba(186, 237, 145, .1) 20%, rgba(186, 237, 145, .1) 40%, rgba(186, 237, 145, .2) 40%, rgba(186, 237, 145, .2) 60%, rgba(186, 237, 145, .4) 60%, rgba(186, 237, 145, .4) 80%, rgba(186, 237, 145, .6) 80%),
+        linear-gradient(90deg, rgba(178, 206, 254, 0) 20%, rgba(178, 206, 254, .3) 20%, rgba(178, 206, 254, .3) 40%, rgba(178, 206, 254, .5) 40%, rgba(178, 206, 254, .5) 60%, rgba(178, 206, 254, .7) 60%, rgba(178, 206, 254, .7) 80%, rgba(178, 206, 254, .8) 80%),
+        linear-gradient(-90deg, rgba(242, 162, 232, 0) 20%, rgba(242, 162, 232, .4) 20%, rgba(242, 162, 232, .4) 40%, rgba(242, 162, 232, .5) 40%, rgba(242, 162, 232, .5) 60%, rgba(242, 162, 232, .6) 60%, rgba(242, 162, 232, .6) 80%, rgba(242, 162, 232, .8) 80%),
+        linear-gradient(180deg, rgba(254, 163, 170, 0) 20%, rgba(254, 163, 170, .4) 20%, rgba(254, 163, 170, .4) 40%, rgba(254, 163, 170, .6) 40%, rgba(254, 163, 170, .6) 60%, rgba(254, 163, 170, .8) 60%, rgba(254, 163, 170, .8) 80%, rgba(254, 163, 170, .9) 80%);
+    background-color: rgb(254, 163, 170);
+    background-size: 100% 100%;
+    min-height: 100%;
+}
+
+.stanza {
+    border-radius: 15px;
+    opacity: 0.97;
+}
+
+.poem {
+    border-color: lightgray;
+    border-width: 2px;
+
+    --s: 70px;
+    /* control the size */
+    --c: #6B5344;
+
+    --_l: #0000 46%, var(--c) 47% 53%, #0000 54%;
+    background:
+        radial-gradient(100% 100% at 100% 100%, var(--_l)) var(--s) var(--s),
+        radial-gradient(100% 100% at 0 0, var(--_l)) var(--s) var(--s),
+        radial-gradient(100% 100%, #0000 22%, var(--c) 23% 29%, #0000 30% 34%, var(--c) 35% 41%, #0000 42%) #F8ECC9;
+    background-size: calc(var(--s)*2) calc(var(--s)*2);
+
+}
+
+.text-author {
+    border-radius: 10px;
+    background-color: #ffffff;
+    line-height: 2rem;
+
 }

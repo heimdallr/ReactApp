@@ -89,9 +89,9 @@ input:focus {
 
 .homepage h2 {
     width: 90%;
-    font-size: 1.9rem;
+    font-size: 1.7rem;
     color: var(--color-light--1);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 thead {
