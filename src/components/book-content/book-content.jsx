@@ -67,7 +67,6 @@ function BookContent({ BookID, apiData }) {
   const [isLoading, setIsLoading] = useState(true);
   const [body, setBody] = useState(""); //Книга
   const scrollableDivRef = useRef(null);
-  //   const [bodyNotes, setbodyNotes] = useState(""); //Заметки
 
   useEffect(() => {
     getRecord();
@@ -84,9 +83,20 @@ function BookContent({ BookID, apiData }) {
         progress.innerHTML = scrollPercent
           ? `<span className="col-auto btn btn-sm btn-secondary mt-1 pt-0 pb-0">${scrollPercent.toFixed(3)}%</span>`
           : "";
+        localStorage.setItem(BookID, scrollPercent);
       });
     }
   }, [BookID]);
+
+  useEffect(() => {
+    if (body && scrollableDivRef.current) {
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(
+        0,
+        (localStorage.getItem(BookID) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
+      );
+    }
+  }, [body, BookID]);
 
   async function getRecord() {
     let binary = null;
