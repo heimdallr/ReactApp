@@ -40,9 +40,9 @@ const searchTerms = [
 const replacements = [
   "<div>",
   "</div>",
-  "<div class='h2 title text-center pt-0'>",
+  "<div class='title text-center p-0 m-0'>",
   "</div>",
-  "<div class='card section text-dark mb-3 p-1 m-1  shadow'>",
+  "<div class='card section text-dark mb-3 p-1 m-1 shadow'>",
   "</div>",
   "<br/>",
   "<div class='poem card alert-secondary text-dark ml-auto mr-auto mt-2 mb-2 pl-1 pr-1 shadow col-auto'>",
@@ -63,15 +63,15 @@ const replacements = [
   "</span>",
 ];
 
-function BookContent({ BookID, apiData }) {
+function BookContent({ BookID, maximazed, bookContent, formFontSize }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [body, setBody] = useState(""); //Книга
+  const [body, setBody] = useState(""); //Текс книги
   const scrollableDivRef = useRef(null);
 
   useEffect(() => {
     getRecord();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [BookID]);
+  }, [bookContent]);
 
   useEffect(() => {
     if (scrollableDivRef.current) {
@@ -80,9 +80,7 @@ function BookContent({ BookID, apiData }) {
       scrollableDiv.addEventListener("scroll", () => {
         const scrollPercent =
           (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
-        progress.innerHTML = scrollPercent
-          ? `<span className="col-auto btn btn-sm btn-secondary mt-1 pt-0 pb-0">${scrollPercent.toFixed(3)}%</span>`
-          : "";
+        progress.innerHTML = scrollPercent ? `🐾 ${scrollPercent.toFixed(3)}%` : "";
         localStorage.setItem(BookID, scrollPercent);
       });
     }
@@ -91,23 +89,30 @@ function BookContent({ BookID, apiData }) {
   useEffect(() => {
     if (body && scrollableDivRef.current) {
       const scrollableDiv = document.getElementById("scrollableDiv");
-      scrollableDiv.scrollTo(
-        0,
-        (localStorage.getItem(BookID) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
-      );
+      if (localStorage.getItem("currentPosition")) {
+        const scrollPosition = localStorage.getItem("currentPosition");
+        setTimeout(() => {
+          scrollableDiv.scrollTo(0, (scrollPosition * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100);
+          localStorage.removeItem("currentPosition");
+        }, 1000);
+      } else {
+        scrollableDiv.scrollTo(
+          0,
+          (localStorage.getItem(BookID) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
+        );
+      }
     }
-  }, [body, BookID]);
+  }, [body, BookID, maximazed, formFontSize]);
 
   async function getRecord() {
     let binary = null;
     let text = null;
     let bodyNotes = null;
     try {
-      const res = await apiData.getBook({ BookID });
-      text = res.slice(res.indexOf("<body>"), res.lastIndexOf("</body>") + 7);
+      text = bookContent.slice(bookContent.indexOf("<body>"), bookContent.lastIndexOf("</body>") + 7);
       text = replaceAllText(text, searchTerms, replacements);
-      if (res.indexOf("<binary")) {
-        binary = parser.parse(res.slice(res.indexOf("<binary"), res.indexOf("</FictionBook>")));
+      if (bookContent.indexOf("<binary")) {
+        binary = parser.parse(bookContent.slice(bookContent.indexOf("<binary"), bookContent.indexOf("</FictionBook>")));
         if (Array.isArray(binary.binary)) {
           binary.binary.map(function (item) {
             const regex = new RegExp('<image (.+):href="#' + item["@_id"] + '"/>', "g");
@@ -120,8 +125,10 @@ function BookContent({ BookID, apiData }) {
           });
         }
       }
-      if (res.indexOf('<body name="notes">')) {
-        bodyNotes = parser.parse(res.slice(res.indexOf('<body name="notes">'), res.lastIndexOf("</body>") + 7));
+      if (bookContent.indexOf('<body name="notes">')) {
+        bodyNotes = parser.parse(
+          bookContent.slice(bookContent.indexOf('<body name="notes">'), bookContent.lastIndexOf("</body>") + 7)
+        );
         if (bodyNotes.body && Array.isArray(bodyNotes.body.section)) {
           bodyNotes.body.section.map(function (item) {
             const regex = new RegExp('<a (.+):href="#' + item["@_id"] + '(.+)">', "g");
@@ -131,29 +138,20 @@ function BookContent({ BookID, apiData }) {
                 `<a ${typeof item["p"] === "string" ? `title="${item["p"]}"` : ""} href="#${item["@_id"]}">`
               );
             }
-            // console.log(builder.build(item["p"]));
           });
-
-          //  <a type="note" l:href="#note_1">[1]</a>
         }
-        // console.log(bodyNotes.body);
       }
       if (text) {
         setBody(text);
       } else {
         setBody("Книга не найдена");
       }
-      //   setBody(text);
-      //   if (res.indexOf('<body name="notes">'))
-      // setbodyNotes(res.slice(res.indexOf('<body name="notes">'), res.lastIndexOf("</body>") + 7));
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
   }
-
-  //   console.log(progress);
 
   return (
     <>
@@ -164,9 +162,9 @@ function BookContent({ BookID, apiData }) {
       </div> */}
       <>
         <div
+          style={{ fontSize: `${formFontSize}em` }}
           id="scrollableDiv"
-          //   style={{ position: "sticky", top: 0, width: `${progress}%`, height: "5px", backgroundColor: "blue" }}
-          className="book-content"
+          className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}
           dangerouslySetInnerHTML={{ __html: body }}
           ref={scrollableDivRef}
         ></div>
@@ -177,7 +175,6 @@ function BookContent({ BookID, apiData }) {
 
 export default BookContent;
 
-//
 function replaceAllText(text, searchTerms, replacements) {
   if (searchTerms.length !== replacements.length) {
     throw new Error("Search and replacement arrays must have the same length.");

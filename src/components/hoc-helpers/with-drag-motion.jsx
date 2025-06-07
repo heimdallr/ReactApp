@@ -12,13 +12,14 @@ const WithDragMotion = (props) => {
     <motion.div
       style={{
         position: "fixed",
-        top: "30%",
-        left: "30%",
+        top: "50%",
+        left: "50%",
         zIndex: 1,
       }}
       drag
       dragConstraints={dragBorders}
-      whileDrag={{ scale: 1.03 }}
+      whileDrag={{ scale: 1.02 }}
+      transition={{ type: "spring", duration: 1 }}
     >
       {props.children}
     </motion.div>

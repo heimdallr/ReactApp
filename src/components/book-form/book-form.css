@@ -4,11 +4,22 @@
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     z-index: 1; */
-    min-width: 40rem;
+    transform: translateY(-50%) translateX(-50%);
+    /* max-width: 95vw; */
+    /* position: "fixed"; */
+    /* top: "50%"; */
+    /* left: "50%"; */
+    /* z-Index: 1; */
+    /* font-size: calc(10px + 1.5vw); */
+}
+
+.form-header {
+    height: 2rem;
 }
 
 .book-stat {
-    max-width: 35rem;
+    max-width: 65vw;
+    min-width: 25rem;
     max-height: 80vh;
     overflow-y: auto;
     overflow: auto;
@@ -24,7 +35,7 @@
     -webkit-text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);
     -moz-text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);
     text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);
-    margin-top: -1rem;
+    /* margin-top: -1rem; */
 }
 
 .hover-image-scale {

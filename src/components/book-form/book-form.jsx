@@ -16,9 +16,16 @@ class BookForm extends Component {
     authors: [],
     series: [],
     displayBookContent: false,
+    maximazed: false,
+    bookContent: null,
+    formFontSize: 1,
   };
   componentDidMount() {
     this.getRecord();
+    document.addEventListener("keydown", this.keydownFunction, false);
+    this.setState({
+      formFontSize: localStorage.getItem("userFontSize") ? localStorage.getItem("userFontSize") * 1 : 1,
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -27,11 +34,17 @@ class BookForm extends Component {
       this.getRecord();
     }
   }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.keydownFunction, false);
+  }
 
   getRecord = () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, bookContent: null, bookForm: {} });
     const { selectedItemID } = this.props;
-    this.props.apiData.getBookForm({ selectedItemID }).then((res) => this.setState({ ...res, loading: false }));
+    this.props.apiData.getBookForm({ selectedItemID }).then((res) => this.setState({ ...res }));
+    this.props.apiData
+      .getBook({ BookID: selectedItemID })
+      .then((res) => this.setState({ bookContent: res, loading: false }));
   };
 
   authorsList = () => {
@@ -79,39 +92,165 @@ class BookForm extends Component {
   handleBookContent = () => {
     this.setState((prevState) => ({
       displayBookContent: !prevState.displayBookContent,
+      maximazed: false,
     }));
+  };
+
+  handleMaximazeBookContent = (BookID) => {
+    localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+    this.setState((prevState) => ({
+      maximazed: !prevState.maximazed,
+    }));
+  };
+
+  keydownFunction = (e) => {
+    if (e.key === "Escape") {
+      this.props.handleSelectItem(null);
+      //Do whatever when esc is pressed
+    }
+    if (e.keyCode === 34 && this.state.displayBookContent) {
+      e.preventDefault();
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 10);
+    }
+    if (e.keyCode === 33 && this.state.displayBookContent) {
+      e.preventDefault();
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(0, scrollableDiv.scrollTop - scrollableDiv.clientHeight + 10);
+    }
+    if (e.keyCode === 38 && this.state.displayBookContent) {
+      e.preventDefault();
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(0, scrollableDiv.scrollTop - 50);
+    }
+    if (e.keyCode === 40 && this.state.displayBookContent) {
+      e.preventDefault();
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(0, scrollableDiv.scrollTop + 50);
+    }
+    if (e.keyCode === 36 && this.state.displayBookContent) {
+      e.preventDefault();
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(0, 0);
+    }
+  };
+
+  handleIncFormFontSize = (BookID) => {
+    localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+    this.setState((prevState) => {
+      if (prevState.formFontSize < 3) {
+        localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
+        return {
+          formFontSize: prevState.formFontSize + 0.1,
+        };
+      }
+    });
+  };
+
+  handleDecFormFontSize = (BookID) => {
+    localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+    this.setState((prevState) => {
+      if (prevState.formFontSize > 0.6) {
+        localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
+        return {
+          formFontSize: prevState.formFontSize - 0.1,
+        };
+      }
+    });
   };
 
   render() {
     const { BookID, Title, SeriesTitle, SeqNumber, LibRate, FileName, BookSize, Genres, Ext } = this.state.bookForm;
-    const { annotation, publisher, city, year, isbn } = this.state;
+    const { annotation, publisher, city, year, isbn, maximazed, bookContent, formFontSize } = this.state;
 
     const content = this.state.loading ? (
       <Spinner />
     ) : (
       <span className="card bg-dark shadow border border-info rounded-lg">
         {/* <div className="" onPointerDownCapture={(e) => e.stopPropagation()}> */}
-        <div className="d-flex flex-row mb-1 justify-content-center">
+        <div className="d-flex flex-row mb-1 justify-content-center form-header">
           {this.state.displayBookContent ? (
-            <span className="btn  btn-sm btn-warning ml-3 mt-1 pt-0 pb-0 mr-auto" onClick={this.handleBookContent}>
+            // Return Back to form
+            <span
+              className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
+              onClick={this.handleBookContent}
+            >
               Назад
             </span>
-          ) : null}
-          <span id="progress"></span>
-          <span
-            className="ml-auto p-0 hover-zoom bg-info"
-            onClick={() => {
-              this.props.handleSelectItem(null);
-            }}
-          >
-            ❌
+          ) : (
+            //Read selector
+            <span
+              className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
+              onClick={this.handleBookContent}
+            >
+              Читать
+            </span>
+          )}
+
+          {/* Progress */}
+          {this.state.displayBookContent ? (
+            <span id="progress" className="text-info p-0 pb-0 mt-1"></span>
+          ) : (
+            <div className="text-center h2 neon-text pl-3 pr-3 mr-1 ml-1">{Title}</div>
+          )}
+
+          <span className="ml-auto p-0 align-self-baseline mr-1 mt-1 align-self-baseline">
+            {this.state.displayBookContent ? (
+              <span>
+                {/* Font size */}
+                <span className="mr-5">
+                  <span
+                    className="bg-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
+                    onClick={() => {
+                      this.handleDecFormFontSize(BookID);
+                    }}
+                  >
+                    ➖
+                  </span>
+                  <span className="mr-1">👀</span>
+                  <span
+                    className="mr-1 bg-warning p-0 btn btn-sm text-dark align-self-baseline"
+                    onClick={() => {
+                      this.handleIncFormFontSize(BookID);
+                    }}
+                  >
+                    ➕
+                  </span>
+                </span>
+                {/* Max Min */}
+                <span
+                  className="mr-3 bg-warning p-0 btn btn-sm text-dark"
+                  onClick={() => {
+                    this.handleMaximazeBookContent(BookID);
+                  }}
+                >
+                  {maximazed ? "📜" : "📖"}
+                </span>
+              </span>
+            ) : null}
+
+            {/* Close */}
+            <span
+              title="Закрыть"
+              className="bg-info p-0 btn btn-sm"
+              onClick={() => {
+                this.props.handleSelectItem(null);
+              }}
+            >
+              ❌
+            </span>
           </span>
         </div>
         {this.state.displayBookContent ? (
-          <BookContent handleBookContent={this.handleBookContent} apiData={this.props.apiData} BookID={BookID} />
+          <BookContent
+            apiData={this.props.apiData}
+            BookID={BookID}
+            maximazed={maximazed}
+            bookContent={bookContent}
+            formFontSize={formFontSize}
+          />
         ) : (
           <>
-            <div className="text-center h2 neon-text pl-3 pr-3 mr-3">{Title}</div>
             <div className="d-flex align-items-center justify-content-center">
               <table className="table-dark table-striped text-left" onClick={this.handleBookContent}>
                 <tbody>
@@ -124,11 +263,6 @@ class BookForm extends Component {
                           alt={`Cover  ${FileName}`}
                         />
                       )}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span className="btn btn-sm btn-outline-warning pt-0 pb-0 mr-1">Читать</span>
                     </td>
                   </tr>
                 </tbody>
@@ -222,10 +356,24 @@ class BookForm extends Component {
     if (this.props.selectedItemID === null) return <></>;
 
     return (
-      <div className="">
-        <WithDragMotion>
-          <div className="book-form">{content}</div>
-        </WithDragMotion>
+      <div>
+        {maximazed ? (
+          <div
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              zIndex: 1,
+            }}
+            className="book-form"
+          >
+            {content}
+          </div>
+        ) : (
+          <WithDragMotion>
+            <div className={`book-form`}>{content}</div>
+          </WithDragMotion>
+        )}
       </div>
     );
   }

@@ -1,14 +1,21 @@
 .book-content {
-    min-width: 40rem;
-    max-width: 80vw;
-    max-height: 80vh;
+    min-width: 45rem;
     overflow-y: auto;
-    overflow: auto;
+    overflow-x: hidden;
     scrollbar-color: var(--color-light--1) rgba(36, 42, 46, 0.8);
     scrollbar-width: thin;
     text-align: justify;
     scroll-behavior: smooth;
+}
 
+.pageContent {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+.maxContent {
+    height: calc(100vh - 2rem);
+    width: 100vw;
 }
 
 p {
@@ -16,11 +23,14 @@ p {
     margin: 0.2rem;
 }
 
+.title {
+    font-size: 1.5em;
+}
+
 .title p {
     text-indent: 0rem;
 
 }
-
 
 .book-content .title h2 {
     -webkit-text-shadow: 3px 3px 2px rgba(195, 195, 5, 0.94);

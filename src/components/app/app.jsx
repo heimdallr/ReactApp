@@ -28,7 +28,6 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    document.addEventListener("keydown", this.escFunction, false);
     if (
       prevState.searchTmp !== this.state.searchTmp &&
       this.state.searchTmp.length > 0 &&
@@ -40,7 +39,6 @@ class App extends Component {
     }
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.escFunction, false);
     clearTimeout(this.timer);
   }
 
@@ -136,12 +134,6 @@ class App extends Component {
     }, 500);
   }; //Поиск с задержкой 1 сек.
 
-  escFunction = (event) => {
-    if (event.key === "Escape") {
-      this.handleSelectItem(null);
-      //Do whatever when esc is pressed
-    }
-  };
   render() {
     const { authors, bookSeries, bookTitles } = this.state.searchStats;
     const { scope, searchTmp } = this.state;
