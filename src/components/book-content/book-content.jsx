@@ -3,12 +3,11 @@ import "./book-content.css";
 import Spinner from "../spinner";
 import { XMLParser } from "fast-xml-parser";
 
-//XML Parser
+//XML Parser + options
 const options = {
   ignoreAttributes: false,
   attributeNamePrefix: "@_",
 };
-
 const parser = new XMLParser(options);
 
 //XML Replace data
@@ -63,16 +62,18 @@ const replacements = [
   "</span>",
 ];
 
-function BookContent({ BookID, maximazed, bookContent, formFontSize }) {
+function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollContent, scrollSpeed }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [body, setBody] = useState(""); //Текс книги
-  const scrollableDivRef = useRef(null);
+  const [body, setBody] = useState(""); //Prepared book content
+  const scrollableDivRef = useRef(null); //Ref to book content div
 
+  //Start's disassembling book content when received
   useEffect(() => {
     getRecord();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookContent]);
 
+  //Display scroll progress on scroll event
   useEffect(() => {
     if (scrollableDivRef.current) {
       const scrollableDiv = document.getElementById("scrollableDiv");
@@ -80,12 +81,15 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize }) {
       scrollableDiv.addEventListener("scroll", () => {
         const scrollPercent =
           (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
-        progress.innerHTML = scrollPercent ? `🐾 ${scrollPercent.toFixed(3)}%` : "";
+        progress.innerHTML = scrollPercent
+          ? `${autoScrollContent ? `🐾` : ""} ${scrollPercent.toFixed(3)}% ${autoScrollContent ? `🐾` : ""}`
+          : "";
         localStorage.setItem(BookID, scrollPercent);
       });
     }
-  }, [BookID]);
+  }, [BookID, scrollSpeed, autoScrollContent]);
 
+  //Maximize || Minimize content
   useEffect(() => {
     if (body && scrollableDivRef.current) {
       const scrollableDiv = document.getElementById("scrollableDiv");
@@ -94,7 +98,7 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize }) {
         setTimeout(() => {
           scrollableDiv.scrollTo(0, (scrollPosition * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100);
           localStorage.removeItem("currentPosition");
-        }, 1000);
+        }, 100);
       } else {
         scrollableDiv.scrollTo(
           0,
@@ -103,6 +107,27 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize }) {
       }
     }
   }, [body, BookID, maximazed, formFontSize]);
+
+  // Scroll content
+  useEffect(() => {
+    let interval = null;
+    if (body && scrollableDivRef.current) {
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      if (autoScrollContent) {
+        interval = setInterval(function () {
+          scrollableDiv.scrollTo({
+            top: scrollableDiv.scrollTop + scrollSpeed,
+            behavior: "smooth",
+          });
+        }, 50);
+      } else {
+        clearInterval(interval);
+      }
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [scrollSpeed, body, autoScrollContent]);
 
   async function getRecord() {
     let binary = null;
@@ -157,18 +182,17 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize }) {
     <>
       {isLoading ? <Spinner /> : null}
 
+      {/* Just for look inside fb2 */}
       {/* <div className="book-content">
         <pre className="card">{body}</pre>
       </div> */}
-      <>
-        <div
-          style={{ fontSize: `${formFontSize}em` }}
-          id="scrollableDiv"
-          className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}
-          dangerouslySetInnerHTML={{ __html: body }}
-          ref={scrollableDivRef}
-        ></div>
-      </>
+      <div
+        style={{ fontSize: `${formFontSize}em` }}
+        id="scrollableDiv"
+        className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}
+        dangerouslySetInnerHTML={{ __html: body }}
+        ref={scrollableDivRef}
+      ></div>
     </>
   );
 }

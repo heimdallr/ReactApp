@@ -18,13 +18,18 @@ class BookForm extends Component {
     displayBookContent: false,
     maximazed: false,
     bookContent: null,
-    formFontSize: 1,
+    formFontSize: 1.5,
+    autoScrollContent: false,
+    scrollSpeed: 10,
   };
   componentDidMount() {
     this.getRecord();
     document.addEventListener("keydown", this.keydownFunction, false);
     this.setState({
-      formFontSize: localStorage.getItem("userFontSize") ? localStorage.getItem("userFontSize") * 1 : 1,
+      formFontSize: localStorage.getItem("userFontSize") ? localStorage.getItem("userFontSize") * 1 : 1.5,
+    });
+    this.setState({
+      scrollSpeed: localStorage.getItem("scrollSpeed") ? localStorage.getItem("scrollSpeed") * 1 : 10,
     });
   }
 
@@ -92,51 +97,106 @@ class BookForm extends Component {
   handleBookContent = () => {
     this.setState((prevState) => ({
       displayBookContent: !prevState.displayBookContent,
+      autoScrollContent: false,
       maximazed: false,
     }));
   };
 
   handleMaximazeBookContent = (BookID) => {
     localStorage.setItem("currentPosition", localStorage.getItem(BookID));
-    this.setState((prevState) => ({
-      maximazed: !prevState.maximazed,
-    }));
+
+    this.setState((prevState) => {
+      return {
+        maximazed: !prevState.maximazed,
+        autoScrollContent: false,
+      };
+    });
+  };
+
+  handleAutoScrollContent = () => {
+    this.setState((prevState) => {
+      return {
+        autoScrollContent: !prevState.autoScrollContent,
+      };
+    });
   };
 
   keydownFunction = (e) => {
+    // Esc
     if (e.key === "Escape") {
       this.props.handleSelectItem(null);
-      //Do whatever when esc is pressed
     }
-    if (e.keyCode === 34 && this.state.displayBookContent) {
+    // Page Down || Space
+    if ((e.keyCode === 34 || e.keyCode === 32) && this.state.displayBookContent) {
       e.preventDefault();
       const scrollableDiv = document.getElementById("scrollableDiv");
-      scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 10);
+      scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
     }
+    // Page Up
     if (e.keyCode === 33 && this.state.displayBookContent) {
       e.preventDefault();
       const scrollableDiv = document.getElementById("scrollableDiv");
-      scrollableDiv.scrollTo(0, scrollableDiv.scrollTop - scrollableDiv.clientHeight + 10);
+      scrollableDiv.scrollTo(0, scrollableDiv.scrollTop - scrollableDiv.clientHeight + 30);
     }
+    // Arrow Up
     if (e.keyCode === 38 && this.state.displayBookContent) {
       e.preventDefault();
       const scrollableDiv = document.getElementById("scrollableDiv");
       scrollableDiv.scrollTo(0, scrollableDiv.scrollTop - 50);
     }
+    //Arrow Down
     if (e.keyCode === 40 && this.state.displayBookContent) {
       e.preventDefault();
       const scrollableDiv = document.getElementById("scrollableDiv");
       scrollableDiv.scrollTo(0, scrollableDiv.scrollTop + 50);
     }
+    // Home
     if (e.keyCode === 36 && this.state.displayBookContent) {
       e.preventDefault();
       const scrollableDiv = document.getElementById("scrollableDiv");
       scrollableDiv.scrollTo(0, 0);
     }
+    // End
+    if (e.keyCode === 35 && this.state.displayBookContent) {
+      e.preventDefault();
+      const scrollableDiv = document.getElementById("scrollableDiv");
+      scrollableDiv.scrollTo(0, scrollableDiv.scrollHeight);
+    }
+    // Enter
+    if (e.keyCode === 13 && this.state.displayBookContent && this.state.bookForm) {
+      e.preventDefault();
+      this.handleMaximazeBookContent(this.state.bookForm.BookID);
+    }
+    // + ScrollSpeed
+    if (e.keyCode === 107 && this.state.displayBookContent && this.state.bookForm && this.state.autoScrollContent) {
+      e.preventDefault();
+      this.handleIncScrollSpeed();
+    }
+    // - ScrollSpeed
+    if (e.keyCode === 109 && this.state.displayBookContent && this.state.bookForm && this.state.autoScrollContent) {
+      e.preventDefault();
+      this.handleDecScrollSpeed();
+    }
+    // + FontSize
+    if (e.keyCode === 107 && this.state.displayBookContent && this.state.bookForm && !this.state.autoScrollContent) {
+      e.preventDefault();
+      this.handleIncFormFontSize(this.state.bookForm.BookID);
+    }
+    // - FontSize
+    if (e.keyCode === 109 && this.state.displayBookContent && this.state.bookForm && !this.state.autoScrollContent) {
+      e.preventDefault();
+      this.handleDecFormFontSize(this.state.bookForm.BookID);
+    }
+    // Ins - autoscroll
+    if (e.keyCode === 96 && this.state.displayBookContent && this.state.bookForm) {
+      e.preventDefault();
+      this.handleAutoScrollContent();
+    }
   };
 
   handleIncFormFontSize = (BookID) => {
     localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+    this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
       if (prevState.formFontSize < 3) {
         localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
@@ -149,6 +209,7 @@ class BookForm extends Component {
 
   handleDecFormFontSize = (BookID) => {
     localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+    this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
       if (prevState.formFontSize > 0.6) {
         localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
@@ -159,9 +220,43 @@ class BookForm extends Component {
     });
   };
 
+  handleIncScrollSpeed = () => {
+    this.setState((prevState) => {
+      if (prevState.scrollSpeed < 20) {
+        localStorage.setItem("scrollSpeed", prevState.scrollSpeed + 1);
+        return {
+          scrollSpeed: prevState.scrollSpeed + 1,
+        };
+      }
+    });
+  };
+
+  handleDecScrollSpeed = () => {
+    this.setState((prevState) => {
+      if (prevState.scrollSpeed > 1) {
+        localStorage.setItem("scrollSpeed", prevState.scrollSpeed - 1);
+        return {
+          scrollSpeed: prevState.scrollSpeed - 1,
+        };
+      }
+    });
+  };
+
   render() {
     const { BookID, Title, SeriesTitle, SeqNumber, LibRate, FileName, BookSize, Genres, Ext } = this.state.bookForm;
-    const { annotation, publisher, city, year, isbn, maximazed, bookContent, formFontSize } = this.state;
+    const {
+      annotation,
+      publisher,
+      city,
+      year,
+      isbn,
+      maximazed,
+      bookContent,
+      formFontSize,
+      autoScrollContent,
+      scrollSpeed,
+    } = this.state;
+    const readerPosition = localStorage.getItem(BookID) * 1;
 
     const content = this.state.loading ? (
       <Spinner />
@@ -183,13 +278,13 @@ class BookForm extends Component {
               className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
               onClick={this.handleBookContent}
             >
-              Читать
+              Читать {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
             </span>
           )}
 
           {/* Progress */}
           {this.state.displayBookContent ? (
-            <span id="progress" className="text-info p-0 pb-0 mt-1"></span>
+            <span id="progress" className="text-warning p-0 pb-0 mt-1"></span>
           ) : (
             <div className="text-center h2 neon-text pl-3 pr-3 mr-1 ml-1">{Title}</div>
           )}
@@ -197,9 +292,42 @@ class BookForm extends Component {
           <span className="ml-auto p-0 align-self-baseline mr-1 mt-1 align-self-baseline">
             {this.state.displayBookContent ? (
               <span>
+                {/* AutoscrollContent */}
+                <span className="mr-5">
+                  <span
+                    title="Уменьшить скорость прокрутки: клавиша минус во время прокрутки текста"
+                    className="bg-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
+                    onClick={() => {
+                      this.handleDecScrollSpeed();
+                    }}
+                  >
+                    ➖
+                  </span>
+                  <span
+                    title="Автопрокрутка текста: Ins"
+                    className={`bg-${
+                      autoScrollContent ? "info" : "warning"
+                    } pl-1 pr-1 pt-0 pb-0 btn btn-sm text-dark align-self-baseline mr-1`}
+                    onClick={() => {
+                      this.handleAutoScrollContent();
+                    }}
+                  >
+                    ⏭ {scrollSpeed}
+                  </span>
+                  <span
+                    title="Увеличить скорость прокрутки: клавиша плюс во время прокрутки текста"
+                    className="mr-1 bg-warning p-0 btn btn-sm text-dark align-self-baseline"
+                    onClick={() => {
+                      this.handleIncScrollSpeed();
+                    }}
+                  >
+                    ➕
+                  </span>
+                </span>
                 {/* Font size */}
                 <span className="mr-5">
                   <span
+                    title="Уменьшить размер шрифта: клавиша минус"
                     className="bg-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
                     onClick={() => {
                       this.handleDecFormFontSize(BookID);
@@ -209,6 +337,7 @@ class BookForm extends Component {
                   </span>
                   <span className="mr-1">👀</span>
                   <span
+                    title="Увеличить размер шрифта: клавиша плюс"
                     className="mr-1 bg-warning p-0 btn btn-sm text-dark align-self-baseline"
                     onClick={() => {
                       this.handleIncFormFontSize(BookID);
@@ -219,6 +348,7 @@ class BookForm extends Component {
                 </span>
                 {/* Max Min */}
                 <span
+                  title="Enter"
                   className="mr-3 bg-warning p-0 btn btn-sm text-dark"
                   onClick={() => {
                     this.handleMaximazeBookContent(BookID);
@@ -231,7 +361,7 @@ class BookForm extends Component {
 
             {/* Close */}
             <span
-              title="Закрыть"
+              title="Закрыть: Esc"
               className="bg-info p-0 btn btn-sm"
               onClick={() => {
                 this.props.handleSelectItem(null);
@@ -248,6 +378,8 @@ class BookForm extends Component {
             maximazed={maximazed}
             bookContent={bookContent}
             formFontSize={formFontSize}
+            autoScrollContent={autoScrollContent}
+            scrollSpeed={scrollSpeed}
           />
         ) : (
           <>
