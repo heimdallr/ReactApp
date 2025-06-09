@@ -198,7 +198,7 @@ class BookForm extends Component {
     localStorage.setItem("currentPosition", localStorage.getItem(BookID));
     this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
-      if (prevState.formFontSize < 3) {
+      if (prevState.formFontSize <= 4) {
         localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
         return {
           formFontSize: prevState.formFontSize + 0.1,
@@ -212,7 +212,7 @@ class BookForm extends Component {
     this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
       if (prevState.formFontSize > 0.6) {
-        localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
+        localStorage.setItem("userFontSize", prevState.formFontSize - 0.1);
         return {
           formFontSize: prevState.formFontSize - 0.1,
         };

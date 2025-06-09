@@ -8,9 +8,14 @@
     /* scroll-behavior: smooth; */
 }
 
+.card {
+    background-color: rgb(220, 205, 158);
+}
+
 .pageContent {
     max-width: 80vw;
     max-height: 80vh;
+
 }
 
 .maxContent {
@@ -58,6 +63,7 @@ p {
 .stanza {
     border-radius: 15px;
     opacity: 0.97;
+    background-color: rgb(220, 205, 158);
 }
 
 .poem {
