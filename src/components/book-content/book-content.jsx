@@ -79,10 +79,19 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
       const scrollableDiv = document.getElementById("scrollableDiv");
       const progress = document.getElementById("progress");
       scrollableDiv.addEventListener("scroll", () => {
+        const totalSeconds =
+          (scrollableDiv.scrollHeight - scrollableDiv.scrollTop - scrollableDiv.clientHeight) / (scrollSpeed * 10);
+        let date = new Date(1970, 0, 0, 0, 0, +totalSeconds || 0);
         const scrollPercent =
           (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
         progress.innerHTML = scrollPercent
-          ? `${autoScrollContent ? `🐾` : ""} ${scrollPercent.toFixed(3)}% ${autoScrollContent ? `🐾` : ""}`
+          ? `${autoScrollContent ? `🐾` : ""} ${scrollPercent.toFixed(3)}% ${
+              autoScrollContent
+                ? `🐾  <span class="ml-5">${Math.floor(totalSeconds / 3600 / 24) || ""} ${
+                    Math.floor(totalSeconds / 3600 / 24) ? "д." : ""
+                  }   ${date.toLocaleTimeString()}</span>`
+                : ""
+            }`
           : "";
         localStorage.setItem(BookID, scrollPercent);
       });
@@ -95,10 +104,8 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
       const scrollableDiv = document.getElementById("scrollableDiv");
       if (localStorage.getItem("currentPosition")) {
         const scrollPosition = localStorage.getItem("currentPosition");
-        setTimeout(() => {
-          scrollableDiv.scrollTo(0, (scrollPosition * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100);
-          localStorage.removeItem("currentPosition");
-        }, 100);
+        scrollableDiv.scrollTo(0, (scrollPosition * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100);
+        localStorage.removeItem("currentPosition");
       } else {
         scrollableDiv.scrollTo(
           0,
@@ -115,11 +122,8 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
       const scrollableDiv = document.getElementById("scrollableDiv");
       if (autoScrollContent) {
         interval = setInterval(function () {
-          scrollableDiv.scrollTo({
-            top: scrollableDiv.scrollTop + scrollSpeed,
-            behavior: "smooth",
-          });
-        }, 50);
+          scrollableDiv.scrollTop++;
+        }, (1 * 100) / scrollSpeed);
       } else {
         clearInterval(interval);
       }

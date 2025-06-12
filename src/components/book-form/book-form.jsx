@@ -18,7 +18,7 @@ class BookForm extends Component {
     displayBookContent: false,
     maximazed: false,
     bookContent: null,
-    formFontSize: 1.5,
+    formFontSize: 2,
     autoScrollContent: false,
     scrollSpeed: 10,
   };
@@ -243,7 +243,7 @@ class BookForm extends Component {
   };
 
   render() {
-    const { BookID, Title, SeriesTitle, SeqNumber, LibRate, FileName, BookSize, Genres, Ext } = this.state.bookForm;
+    const { BookID, Title, SeriesTitle, LibRate, FileName, BookSize, Genres, Ext } = this.state.bookForm;
     const {
       annotation,
       publisher,
