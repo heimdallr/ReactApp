@@ -61,13 +61,29 @@ class BookTitlesBySeries extends Component {
     return result.map((item) => {
       const colorStyle = item.BookID === this.props.selectedBookID ? "text-dark bg-warning" : "text-light";
       const starRating = Array(item.LibRate * 1 + 1).join("☆");
+      const bookProgress = localStorage.getItem(item.BookID) * 1;
       const bookSize =
         item.BookSize > 1000 * 1000
           ? `${(item.BookSize / 1024 / 1024).toFixed(1)} M`
           : `${(item.BookSize / 1024).toFixed(1)} k`;
       return (
         <tr className={colorStyle} key={item.BookID} onClick={() => this.props.handleSelectItem(item.BookID)}>
-          <td>{item.Title}</td>
+          <td
+            style={{
+              background: `${
+                bookProgress ? "linear-gradient(90deg,rgba(18, 140, 249, 1) 0%,rgba(18, 140, 249, 0) 80%" : 0
+              }`,
+            }}
+          >
+            {bookProgress ? (
+              <span className="badge badge-light mr-1 align-top pt-0 pb-0 shadow">{`${Number(
+                bookProgress.toFixed(1)
+              )}%`}</span>
+            ) : (
+              ""
+            )}
+            {item.Title}
+          </td>
           {item.AuthorsNames.includes(",") ? (
             <td>{item.AuthorsNames}</td>
           ) : (
@@ -81,6 +97,7 @@ class BookTitlesBySeries extends Component {
             </td>
           )}
           <td className="text-center">{item.SeqNumber === null ? "" : item.SeqNumber}</td>
+
           <td className="text-center">{item.BookSize === null ? "" : bookSize}</td>
           <td>{item.Genres === null ? "" : item.Genres}</td>
           <td className="text-center">{item.LibRate === null ? "" : starRating}</td>
