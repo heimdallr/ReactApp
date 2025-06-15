@@ -9,6 +9,7 @@ import BookDescription from "../book-description/book-description";
 class BookForm extends Component {
   state = {
     loading: false,
+    bookContentLoading: false,
     bookForm: {},
     annotation: "",
     publisher: "",
@@ -20,6 +21,7 @@ class BookForm extends Component {
     displayBookContent: false,
     maximazed: false,
     bookContent: null,
+    bookCover: null,
     formFontSize: 2,
     autoScrollContent: false,
     scrollSpeed: 10,
@@ -37,7 +39,7 @@ class BookForm extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedItemID !== this.props.selectedItemID) {
-      this.setState({ loading: true, bookForm: {} });
+      this.setState({ bookContentLoading: true, loading: true });
       this.getRecord();
     }
   }
@@ -47,12 +49,37 @@ class BookForm extends Component {
   }
 
   getRecord = () => {
-    this.setState({ loading: true, bookContent: null, bookForm: {} });
+    this.setState({
+      loading: true,
+      bookContentLoading: true,
+      bookContent: null,
+      bookCover: null,
+      bookForm: {},
+      annotation: "",
+      publisher: "",
+      city: "",
+      year: "",
+      isbn: "",
+      authors: [],
+      series: [],
+    });
     const { selectedItemID } = this.props;
-    this.props.apiData.getBookForm({ selectedItemID }).then((res) => this.setState({ ...res }));
+    this.props.apiData.getBookForm({ selectedItemID }).then((res) => {
+      this.setState({ ...res, loading: false });
+      this.getBookCover(selectedItemID);
+    });
+  };
+  getBookCover = (selectedItemID) => {
+    this.props.apiData.getCover({ BookID: selectedItemID }).then((res) => {
+      this.setState({ bookCover: URL.createObjectURL(res), loading: false });
+      this.getBookContent(selectedItemID);
+    });
+  };
+
+  getBookContent = (selectedItemID) => {
     this.props.apiData
       .getBook({ BookID: selectedItemID })
-      .then((res) => this.setState({ bookContent: res, loading: false }));
+      .then((res) => this.setState({ bookContent: res, bookContentLoading: false }));
   };
 
   authorsList = () => {
@@ -259,7 +286,9 @@ class BookForm extends Component {
       autoScrollContent,
       scrollSpeed,
       loading,
+      bookContentLoading,
       displayBookContent,
+      bookCover,
     } = this.state;
     const readerPosition = localStorage.getItem(BookID) * 1;
     const styleContentMaximazed = {
@@ -289,8 +318,10 @@ class BookForm extends Component {
           Title={Title}
           readerPosition={readerPosition}
           displayBookContent={displayBookContent}
+          bookContentLoading={bookContentLoading}
         />
-        {displayBookContent ? (
+
+        {displayBookContent && bookContent ? (
           <BookContent
             apiData={this.props.apiData}
             BookID={BookID}
@@ -312,6 +343,8 @@ class BookForm extends Component {
             isbn={isbn}
             authorsList={this.authorsList}
             seriesList={this.seriesList}
+            bookContentLoading={bookContentLoading}
+            bookCover={bookCover}
           />
         )}
       </span>

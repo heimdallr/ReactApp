@@ -3,7 +3,31 @@ import "./book-control.css";
 
 export class BookControl extends Component {
   render() {
-    const { BookID, autoScrollContent, scrollSpeed, maximazed, displayBookContent, Title, readerPosition } = this.props;
+    const {
+      BookID,
+      autoScrollContent,
+      scrollSpeed,
+      maximazed,
+      displayBookContent,
+      Title,
+      readerPosition,
+      bookContentLoading,
+    } = this.props;
+    const readBook = (
+      <span
+        className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
+        onClick={this.props.handleBookContent}
+      >
+        Читать
+        {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
+      </span>
+    );
+    const bookIsLoading = (
+      <span className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline">
+        Загрузка...
+        {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
+      </span>
+    );
     return (
       <div className="d-flex flex-row mb-1 justify-content-center form-header">
         {displayBookContent ? (
@@ -15,13 +39,7 @@ export class BookControl extends Component {
             Назад
           </span>
         ) : (
-          //Read selector
-          <span
-            className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
-            onClick={this.props.handleBookContent}
-          >
-            Читать {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
-          </span>
+          <>{bookContentLoading ? bookIsLoading : readBook}</>
         )}
 
         {/* Progress */}

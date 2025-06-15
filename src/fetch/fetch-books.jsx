@@ -37,4 +37,8 @@ export default class FetchBooks {
   getBook = async ({ BookID }) => {
     return await this.apiData.getText(`Images/fb2/${BookID}`);
   };
+
+  getCover = async ({ BookID }) => {
+    return await this.apiData.getBlob(`Images/covers/${BookID}`);
+  };
 }

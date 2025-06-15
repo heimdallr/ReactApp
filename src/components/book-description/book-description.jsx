@@ -11,17 +11,20 @@ export class BookDescription extends Component {
       year,
       isbn,
       _baseUrl,
+      bookContentLoading,
+      bookCover,
     } = this.props;
     return (
       <div className="d-flex align-items-center justify-content-center">
-        <table className="table-dark table-striped text-left" onClick={this.props.handleBookContent}>
+        <table
+          className="table-dark table-striped text-left"
+          onClick={() => {
+            if (!bookContentLoading) this.props.handleBookContent();
+          }}
+        >
           <tbody>
             <tr>
-              <td className="hover-image-scale p-0">
-                {FileName && (
-                  <img className="coverImage" src={`${_baseUrl}Images/covers/${BookID}`} alt={`Cover  ${FileName}`} />
-                )}
-              </td>
+              <td className="hover-image-scale p-0">{<img className="coverImage" src={bookCover} />}</td>
             </tr>
           </tbody>
         </table>
@@ -60,9 +63,10 @@ export class BookDescription extends Component {
               <tr>
                 <td>Размер</td>
                 <td>
-                  {BookSize > 1000 * 1000
-                    ? `${(BookSize / 1024 / 1024).toFixed(1)} M`
-                    : `${(BookSize / 1024).toFixed(1)} k`}
+                  {BookSize &&
+                    (BookSize > 1000 * 1000
+                      ? `${(BookSize / 1024 / 1024).toFixed(1)} M`
+                      : `${(BookSize / 1024).toFixed(1)} k`)}
                 </td>
               </tr>
               <tr>
