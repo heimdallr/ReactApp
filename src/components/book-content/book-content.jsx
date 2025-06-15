@@ -51,7 +51,7 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
         );
       }
     }
-  }, [body, BookID, maximazed]);
+  }, [body, BookID, maximazed, formFontSize]);
 
   // Scroll content
   useEffect(() => {
