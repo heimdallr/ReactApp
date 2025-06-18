@@ -28,10 +28,10 @@ class BookTitlesByAuthor extends Component {
   }
 
   getRecords = () => {
-    const { selectedItemID } = this.props;
+    const { selectedItemID, selectedGroupID } = this.props;
     // this.setState({ searchTmp: search });
     this.props.apiData
-      .getSearchAuthorBooks({ selectedItemID })
+      .getSearchAuthorBooks({ selectedItemID, selectedGroupID })
       .then((res) => this.setState({ ...res, loading: false }));
   };
 
@@ -162,4 +162,5 @@ class BookTitlesByAuthor extends Component {
     );
   }
 }
+// eslint-disable-next-line react-refresh/only-export-components
 export default withErrorBoundary(BookTitlesByAuthor);

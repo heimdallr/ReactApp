@@ -15,7 +15,7 @@ export class BookControl extends Component {
     } = this.props;
     const readBook = (
       <span
-        className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
+        className="btn btn-sm btn-outline-info ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
         onClick={this.props.handleBookContent}
       >
         Читать
@@ -24,7 +24,7 @@ export class BookControl extends Component {
     );
     const bookIsLoading = (
       <span className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline">
-        Загрузка...
+        Загрузка
         {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
       </span>
     );
@@ -33,7 +33,7 @@ export class BookControl extends Component {
         {displayBookContent ? (
           // Return Back to form
           <span
-            className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
+            className="btn btn-sm btn-outline-info ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
             onClick={this.props.handleBookContent}
           >
             Назад

@@ -12,6 +12,7 @@ class BookTitlesBySeries extends Component {
     titlesList: [],
     sortHeadID: "",
     sortRevers: false,
+    selectedItemID: null,
   };
 
   componentDidMount() {
@@ -27,10 +28,9 @@ class BookTitlesBySeries extends Component {
   }
 
   getRecords = () => {
-    const { selectedItemID } = this.props;
-    // this.setState({ searchTmp: search });
+    const { selectedItemID, selectedGroupID } = this.props;
     this.props.apiData
-      .getSearchSeriesBooks({ selectedItemID })
+      .getSearchSeriesBooks({ selectedItemID, selectedGroupID })
       .then((res) => this.setState({ ...res, loading: false }));
   };
 
@@ -167,4 +167,5 @@ class BookTitlesBySeries extends Component {
   }
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default withErrorBoundary(BookTitlesBySeries);

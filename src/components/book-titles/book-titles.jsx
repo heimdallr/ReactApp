@@ -20,7 +20,16 @@ class BookTitles extends Component {
     this.getRecords();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    //change group or activate search
+    if (
+      prevProps.selectedGroupID !== this.props.selectedGroupID &&
+      (this.props.selectedGroupID || (this.props.selectedGroupID === 0 && this.props.search.length > 2))
+    ) {
+      this.setState({ loading: true });
+      this.getRecords();
+    }
+    //change search string
     if (this.state.searchTmp !== this.props.search && this.props.search.length > 2 && this.state.loading === false) {
       this.setState({ loading: true });
       this.getRecords();
@@ -28,9 +37,11 @@ class BookTitles extends Component {
   }
 
   getRecords = () => {
-    const { search } = this.props;
+    const { search, selectedGroupID } = this.props;
     this.setState({ searchTmp: search });
-    this.props.apiData.getSearchTitles({ search }).then((res) => this.setState({ ...res, loading: false }));
+    this.props.apiData
+      .getSearchTitles({ search, selectedGroupID })
+      .then((res) => this.setState({ ...res, loading: false }));
   };
 
   tableRecords = () => {
@@ -178,4 +189,5 @@ class BookTitles extends Component {
   }
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default withErrorBoundary(BookTitles);

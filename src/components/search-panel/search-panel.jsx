@@ -3,9 +3,9 @@ import React, { Component } from "react";
 
 export default class SearchPanel extends Component {
   render() {
-    const { search, onSearchChange } = this.props;
+    const { search, onSearchChange, onFocus = () => {} } = this.props;
     const textFieldLength = search && search.length > 15 ? search.length : 15;
-    const textStyle = { width: `${textFieldLength * 1.1 + 3}ch`, maxWidth: window.innerWidth * 0.9 }; //Авторазмер поля
+    const textStyle = { width: `${textFieldLength + 2}ch`, maxWidth: window.innerWidth * 0.9 }; //Авторазмер поля
     return (
       <div className="search-panel mr-auto p-0">
         <input
@@ -14,6 +14,7 @@ export default class SearchPanel extends Component {
           name="label"
           placeholder="Поиск книг"
           onChange={onSearchChange}
+          onFocus={onFocus}
           value={search}
         />
       </div>

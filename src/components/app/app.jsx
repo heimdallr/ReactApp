@@ -18,6 +18,8 @@ class App extends Component {
     searchStats: { authors: 0, bookSeries: 0, bookTitles: 0 },
     scope: "bookTitles",
     genres: [],
+    groups: [],
+    selectedGroupID: 0,
     selectedItemID: null,
     numberOfBooks: null,
   };
@@ -28,6 +30,16 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    //change group or activate search
+    if (
+      prevState.selectedGroupID !== this.state.selectedGroupID &&
+      (this.state.selectedGroupID || (this.state.selectedGroupID === 0 && this.state.search.length > 2))
+    ) {
+      this.setState({ loading: true });
+      this.getRecords(this.state.search, this.state.selectedGroupID);
+    }
+
+    //change search string
     if (
       prevState.searchTmp !== this.state.searchTmp &&
       this.state.searchTmp.length > 0 &&
@@ -35,7 +47,7 @@ class App extends Component {
       this.state.loading === false
     ) {
       this.setState({ loading: true });
-      this.getRecords();
+      this.getRecords(this.state.search, this.state.selectedGroupID);
     }
   }
   componentWillUnmount() {
@@ -46,10 +58,9 @@ class App extends Component {
     this.apiData.getConfig().then((res) => this.setState({ ...res, loading: false }));
   };
 
-  getRecords = () => {
-    const { search } = this.state;
+  getRecords = (search, selectedGroupID) => {
     this.setState({ searchTmp: search });
-    this.apiData.getSearchStats({ search }).then((res) => this.setState({ ...res, loading: false }));
+    this.apiData.getSearchStats({ search, selectedGroupID }).then((res) => this.setState({ ...res, loading: false }));
   };
 
   tableRecords = () => {
@@ -104,12 +115,17 @@ class App extends Component {
     this.setState({ scope });
   };
 
+  handleGroupSelection = (selectedGroupID) => {
+    this.setState({ selectedGroupID });
+  };
+
   handleSeriesSelection = (search) => {
-    if (search.length > 2) this.setState({ scope: "bookSeries", searchTmp: search, search: search });
+    if (search.length > 2)
+      this.setState({ scope: "bookSeries", searchTmp: search, search: search, selectedGroupID: 0 });
   };
 
   handleAuthorSelection = (search) => {
-    if (search.length > 2) this.setState({ scope: "authors", searchTmp: search, search: search });
+    if (search.length > 2) this.setState({ scope: "authors", searchTmp: search, search: search, selectedGroupID: 0 });
   };
 
   handleSelectItem = (BookID) => {
@@ -134,25 +150,46 @@ class App extends Component {
     }, 500);
   }; //Поиск с задержкой 1 сек.
 
+  groups = () => {
+    const groupsButtons = this.state.groups.map((item) => {
+      return (
+        <ScopeSelector
+          key={item.GroupID}
+          handleScopeSelection={this.handleGroupSelection}
+          scopeID={item.GroupID}
+          scopeName={item.Title}
+          scopeQuantity={item.numberOfBooks}
+          scope={this.state.selectedGroupID}
+        />
+      );
+    });
+    return groupsButtons;
+  };
+
   render() {
     const { authors, bookSeries, bookTitles } = this.state.searchStats;
-    const { scope, searchTmp } = this.state;
+    const { scope, searchTmp, selectedItemID, selectedGroupID } = this.state;
 
     return (
       <React.Fragment>
-        {this.state.selectedItemID && (
+        {selectedItemID && (
           <BookForm
             handleSelectItem={this.handleSelectItem}
             apiData={this.apiData}
-            selectedItemID={this.state.selectedItemID}
+            selectedItemID={selectedItemID}
             handleAuthorSelection={this.handleAuthorSelection}
             handleSeriesSelection={this.handleSeriesSelection}
           />
         )}
         <div className="card shadow ">
           <div className="d-flex flex-wrap m-0 p-1 bg-secondary">
-            <SearchPanel search={this.state.search} onSearchChange={this.onSearchChange} />
-            <span className="text-light ">∑ {this.state.numberOfBooks}</span>
+            <SearchPanel
+              search={this.state.search}
+              onSearchChange={this.onSearchChange}
+              onFocus={() => this.handleGroupSelection(0)}
+            />
+            {this.groups()}
+            <span className="text-light ml-3">∑ {this.state.numberOfBooks}</span>
             {this.state.loading && <Spinner />}
           </div>
         </div>
@@ -184,32 +221,35 @@ class App extends Component {
             </div>
           </div>
         ) : null}
-        {scope === "bookSeries" && searchTmp.length > 2 ? (
+        {scope === "bookSeries" && (searchTmp.length > 2 || selectedGroupID) ? (
           <BookSeries
             search={searchTmp}
             apiData={this.apiData}
             handleAuthorSelection={this.handleAuthorSelection}
             handleSelectItem={this.handleSelectItem}
-            selectedItemID={this.state.selectedItemID}
+            selectedItemID={selectedItemID}
+            selectedGroupID={selectedGroupID}
           />
         ) : null}
-        {scope === "authors" && searchTmp.length > 2 ? (
+        {scope === "authors" && (searchTmp.length > 2 || selectedGroupID) ? (
           <Authors
             search={searchTmp}
             apiData={this.apiData}
             handleSeriesSelection={this.handleSeriesSelection}
             handleSelectItem={this.handleSelectItem}
-            selectedItemID={this.state.selectedItemID}
+            selectedItemID={selectedItemID}
+            selectedGroupID={selectedGroupID}
           />
         ) : null}
-        {scope === "bookTitles" && searchTmp.length > 2 ? (
+        {scope === "bookTitles" && (searchTmp.length > 2 || selectedGroupID) ? (
           <BookTitles
             search={searchTmp}
             apiData={this.apiData}
             handleSeriesSelection={this.handleSeriesSelection}
             handleAuthorSelection={this.handleAuthorSelection}
             handleSelectItem={this.handleSelectItem}
-            selectedItemID={this.state.selectedItemID}
+            selectedItemID={selectedItemID}
+            selectedGroupID={selectedGroupID}
           />
         ) : null}
       </React.Fragment>
@@ -217,4 +257,5 @@ class App extends Component {
   }
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default withErrorBoundary(App);

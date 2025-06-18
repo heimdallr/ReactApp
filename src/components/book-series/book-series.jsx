@@ -21,17 +21,26 @@ class BookSeries extends Component {
     this.getRecords();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    //change group or activate search
+    if (
+      prevProps.selectedGroupID !== this.props.selectedGroupID &&
+      (this.props.selectedGroupID || (this.props.selectedGroupID === 0 && this.props.search.length > 2))
+    ) {
+      this.setState({ loading: true, selectedItemID: null });
+      this.getRecords();
+    }
+    //change search string
     if (this.state.searchTmp !== this.props.search && this.props.search.length > 2 && this.state.loading === false) {
-      this.setState({ loading: true });
+      this.setState({ loading: true, selectedItemID: null });
       this.getRecords();
     }
   }
 
   getRecords = () => {
-    const { search } = this.props;
+    const { search, selectedGroupID } = this.props;
     this.setState({ searchTmp: search });
-    this.props.apiData.getSearchSeries({ search }).then((res) => {
+    this.props.apiData.getSearchSeries({ search, selectedGroupID }).then((res) => {
       this.setState({ ...res, loading: false });
       if (res.seriesList.length === 1) this.setState({ selectedItemID: res.seriesList[0].SeriesID });
     });
@@ -115,6 +124,7 @@ class BookSeries extends Component {
               apiData={this.props.apiData}
               handleAuthorSelection={this.props.handleAuthorSelection}
               handleSelectItem={this.props.handleSelectItem}
+              selectedGroupID={this.props.selectedGroupID}
             />
           )}
         </div>
@@ -123,4 +133,5 @@ class BookSeries extends Component {
   }
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default withErrorBoundary(BookSeries);

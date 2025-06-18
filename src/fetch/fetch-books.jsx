@@ -6,28 +6,40 @@ export default class FetchBooks {
     return await this.apiData.getResourse(`main/getBooks/getConfig`);
   };
 
-  getSearchStats = async ({ search }) => {
-    return await this.apiData.getResourse(`main/getBooks/getSearchStats?search=${search}`);
+  getSearchStats = async ({ search, selectedGroupID }) => {
+    return await this.apiData.getResourse(
+      `main/getBooks/getSearchStats?search=${search}&selectedGroupID=${selectedGroupID}`
+    );
   };
 
-  getSearchAuthors = async ({ search }) => {
-    return await this.apiData.getResourse(`main/getBooks/getSearchAuthors?search=${search}`);
+  getSearchAuthors = async ({ search, selectedGroupID }) => {
+    return await this.apiData.getResourse(
+      `main/getBooks/getSearchAuthors?search=${search}&selectedGroupID=${selectedGroupID}`
+    );
   };
 
-  getSearchAuthorBooks = async ({ selectedItemID }) => {
-    return await this.apiData.getResourse(`main/getBooks/getSearchAuthorBooks?selectedItemID=${selectedItemID}`);
+  getSearchAuthorBooks = async ({ selectedItemID, selectedGroupID }) => {
+    return await this.apiData.getResourse(
+      `main/getBooks/getSearchAuthorBooks?selectedItemID=${selectedItemID}&selectedGroupID=${selectedGroupID}`
+    );
   };
 
-  getSearchSeries = async ({ search }) => {
-    return await this.apiData.getResourse(`main/getBooks/getSearchSeries?search=${search}`);
+  getSearchSeries = async ({ search, selectedGroupID }) => {
+    return await this.apiData.getResourse(
+      `main/getBooks/getSearchSeries?search=${search}&selectedGroupID=${selectedGroupID}`
+    );
   };
 
-  getSearchSeriesBooks = async ({ selectedItemID }) => {
-    return await this.apiData.getResourse(`main/getBooks/getSearchSeriesBooks?selectedItemID=${selectedItemID}`);
+  getSearchSeriesBooks = async ({ selectedItemID, selectedGroupID }) => {
+    return await this.apiData.getResourse(
+      `main/getBooks/getSearchSeriesBooks?selectedItemID=${selectedItemID}&selectedGroupID=${selectedGroupID}`
+    );
   };
 
-  getSearchTitles = async ({ search }) => {
-    return await this.apiData.getResourse(`main/getBooks/getSearchTitles?search=${search}`);
+  getSearchTitles = async ({ search, selectedGroupID }) => {
+    return await this.apiData.getResourse(
+      `main/getBooks/getSearchTitles?search=${search}&selectedGroupID=${selectedGroupID}`
+    );
   };
 
   getBookForm = async ({ selectedItemID }) => {

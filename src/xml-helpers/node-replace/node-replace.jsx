@@ -32,7 +32,7 @@ function nodeReplace(text) {
     "</div>",
     "<div class='title text-center p-0 m-0'>",
     "</div>",
-    "<div class='card section text-dark mb-3 p-1 m-1 shadow'>",
+    "<div class='card section text-dark p-1 m-1 shadow'>",
     "</div>",
     "<br/>",
     "<div class='poem card alert-secondary text-dark ml-auto mr-auto mt-2 mb-2 pl-1 pr-1 shadow col-auto'>",
