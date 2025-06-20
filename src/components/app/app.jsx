@@ -33,7 +33,7 @@ class App extends Component {
     //change group or activate search
     if (
       prevState.selectedGroupID !== this.state.selectedGroupID &&
-      (this.state.selectedGroupID || (this.state.selectedGroupID === 0 && this.state.search.length > 2))
+      (this.state.selectedGroupID || (!this.state.selectedGroupID && this.state.search.length > 2))
     ) {
       this.setState({ loading: true });
       this.getRecords(this.state.search, this.state.selectedGroupID);
@@ -195,7 +195,7 @@ class App extends Component {
             <SearchPanel
               search={this.state.search}
               onSearchChange={this.onSearchChange}
-              onFocus={() => this.handleGroupSelection(0)}
+              onFocus={() => this.handleGroupSelection(null)}
             />
             {this.groups()}
             <span className="text-light ml-3">∑ {this.state.numberOfBooks}</span>

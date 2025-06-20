@@ -27,7 +27,7 @@ class Authors extends Component {
     //change group or activate search
     if (
       prevProps.selectedGroupID !== this.props.selectedGroupID &&
-      (this.props.selectedGroupID || (this.props.selectedGroupID === 0 && this.props.search.length > 2))
+      (this.props.selectedGroupID || (!this.props.selectedGroupID && this.props.search.length > 2))
     ) {
       this.setState({ loading: true, selectedItemID: null });
       this.getRecords();

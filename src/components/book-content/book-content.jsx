@@ -73,6 +73,13 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
 
   return (
     <div
+      onClick={(e) => {
+        if (maximazed) {
+          e.preventDefault();
+          const scrollableDiv = document.getElementById("scrollableDiv");
+          scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
+        }
+      }}
       style={{ fontSize: `${formFontSize}em` }}
       id="scrollableDiv"
       className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}

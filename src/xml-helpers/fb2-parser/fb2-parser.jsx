@@ -10,10 +10,6 @@ const options = {
 const parser = new XMLParser(options);
 
 function fb2Parser(bookContent) {
-  const parser1 = new DOMParser();
-  const xmlDoc = parser1.parseFromString(bookContent, "text/xml");
-  const elements = xmlDoc.getElementsByTagName("section");
-  console.log(Array.from(elements).map((element) => element.textContent));
   let binary = null;
   let text = null;
   let bodyNotes = null;
