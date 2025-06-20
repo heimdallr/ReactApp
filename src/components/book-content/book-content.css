@@ -25,7 +25,8 @@
 
 p {
     text-indent: 3rem;
-    margin: 0.2rem;
+    margin: 0rem;
+    hyphens: auto;
 }
 
 .title {

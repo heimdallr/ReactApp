@@ -77,13 +77,14 @@ class BookTitles extends Component {
           ? `${(item.BookSize / 1024 / 1024).toFixed(1)} M`
           : `${(item.BookSize / 1024).toFixed(1)} k`;
       return (
-        <tr className={colorStyle} key={item.BookID} onClick={() => this.props.handleSelectItem(item.BookID)}>
+        <tr className={colorStyle} key={item.BookID}>
           <td
             style={{
               background: `${
                 bookProgress ? "linear-gradient(90deg,rgba(18, 140, 249, 1) 0%,rgba(18, 140, 249, 0) 80%" : 0
               }`,
             }}
+            onClick={() => this.props.handleSelectItem(item.BookID)}
           >
             {bookProgress ? (
               <span className="badge badge-light mr-1 align-top pt-0 pb-0 shadow">{`${Number(
@@ -114,11 +115,19 @@ class BookTitles extends Component {
           >
             {item.SeriesTitle}
           </td>
-          <td className="text-center">{item.SeqNumber === null ? "" : item.SeqNumber}</td>
-          <td className="text-center">{item.BookSize === null ? "" : bookSize}</td>
-          <td>{item.Genres === null ? "" : item.Genres}</td>
-          <td className="text-center">{item.LibRate === null ? "" : starRating}</td>
-          <td className="text-center">{item.Lang === null ? "" : item.Lang}</td>
+          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+            {item.SeqNumber === null ? "" : item.SeqNumber}
+          </td>
+          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+            {item.BookSize === null ? "" : bookSize}
+          </td>
+          <td onClick={() => this.props.handleSelectItem(item.BookID)}>{item.Genres === null ? "" : item.Genres}</td>
+          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+            {item.LibRate === null ? "" : starRating}
+          </td>
+          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+            {item.Lang === null ? "" : item.Lang}
+          </td>
         </tr>
       );
     });

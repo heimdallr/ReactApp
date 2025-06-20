@@ -8,37 +8,41 @@ export default class FetchBooks {
 
   getSearchStats = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchStats?search=${search}&selectedGroupID=${selectedGroupID}`
+      `main/getBooks/getSearchStats?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
     );
   };
 
   getSearchAuthors = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchAuthors?search=${search}&selectedGroupID=${selectedGroupID}`
+      `main/getBooks/getSearchAuthors?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
     );
   };
 
   getSearchAuthorBooks = async ({ selectedItemID, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchAuthorBooks?selectedItemID=${selectedItemID}&selectedGroupID=${selectedGroupID}`
+      `main/getBooks/getSearchAuthorBooks?selectedItemID=${selectedItemID}${
+        selectedGroupID ? `&selectedGroupID=${selectedGroupID}` : ``
+      }`
     );
   };
 
   getSearchSeries = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchSeries?search=${search}&selectedGroupID=${selectedGroupID}`
+      `main/getBooks/getSearchSeries?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
     );
   };
 
   getSearchSeriesBooks = async ({ selectedItemID, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchSeriesBooks?selectedItemID=${selectedItemID}&selectedGroupID=${selectedGroupID}`
+      `main/getBooks/getSearchSeriesBooks?selectedItemID=${selectedItemID}${
+        selectedGroupID ? `&selectedGroupID=${selectedGroupID}` : ``
+      }`
     );
   };
 
   getSearchTitles = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchTitles?search=${search}&selectedGroupID=${selectedGroupID}`
+      `main/getBooks/getSearchTitles?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
     );
   };
 

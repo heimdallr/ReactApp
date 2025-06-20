@@ -49,6 +49,15 @@ class App extends Component {
       this.setState({ loading: true });
       this.getRecords(this.state.search, this.state.selectedGroupID);
     }
+
+    //activate empty search
+    if (
+      (prevState.selectedGroupID !== this.state.selectedGroupID || prevState.searchTmp !== this.state.searchTmp) &&
+      this.state.selectedGroupID === 0 &&
+      this.state.search.length < 3
+    ) {
+      this.setState({ searchStats: { authors: 0, bookSeries: 0, bookTitles: 0 } });
+    }
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
