@@ -28,7 +28,6 @@ class App extends Component {
   componentDidMount() {
     this.getConfig();
   }
-
   componentDidUpdate(prevProps, prevState) {
     //change group or activate search
     if (
@@ -72,54 +71,6 @@ class App extends Component {
     this.apiData.getSearchStats({ search, selectedGroupID }).then((res) => this.setState({ ...res, loading: false }));
   };
 
-  tableRecords = () => {
-    const result = this.state.itemList.sort((a, b) => {
-      if (a[this.state.sortHeadID] === b[this.state.sortHeadID]) {
-        return 0;
-      }
-      if (a[this.state.sortHeadID] === null) {
-        return 1;
-      }
-      if (b[this.state.sortHeadID] === null) {
-        return -1;
-      }
-      if (this.state.sortRevers) {
-        return a[this.state.sortHeadID] < b[this.state.sortHeadID] ? 1 : -1;
-      }
-      return a[this.state.sortHeadID] > b[this.state.sortHeadID] ? 1 : -1;
-    });
-    return result.map((item) => {
-      let star = "";
-      switch (item.LibRate) {
-        case "1":
-          star = "☆";
-          break;
-        case "2":
-          star = "☆☆";
-          break;
-        case "3":
-          star = "☆☆☆";
-          break;
-        case "4":
-          star = "☆☆☆☆";
-          break;
-        case "5":
-          star = "☆☆☆☆☆";
-          break;
-      }
-      return (
-        <tr key={item.BookID}>
-          <td>{star}</td>
-          <td>{item.Title}</td>
-          <td>{item.SeriesTitle}</td>
-          <td>{item.AuthorsNames}</td>
-          <td>{item.BookSize}</td>
-          <td>{item.Lang}</td>
-        </tr>
-      );
-    });
-  };
-
   handleScopeSelection = (scope) => {
     this.setState({ scope });
   };
@@ -157,7 +108,7 @@ class App extends Component {
         searchTmp: this.state.search,
       });
     }, 500);
-  }; //Поиск с задержкой 1 сек.
+  }; //Поиск с задержкой.
 
   groups = () => {
     const groupsButtons = this.state.groups.map((item) => {

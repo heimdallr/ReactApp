@@ -2,7 +2,15 @@ import { useEffect, useState, useRef } from "react";
 import "./book-content.css";
 import fb2Parser from "../../xml-helpers/fb2-parser";
 
-function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollContent, scrollSpeed }) {
+function BookContent({
+  BookID,
+  maximazed,
+  bookContent,
+  formFontSize,
+  autoScrollContent,
+  scrollSpeed,
+  handleAutoScrollContent,
+}) {
   const [body, setBody] = useState(""); //Prepared book content
   const scrollableDivRef = useRef(null); //Ref to book content div
 
@@ -57,10 +65,10 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
   useEffect(() => {
     let interval = null;
     if (body && scrollableDivRef.current) {
-      const scrollableDiv = document.getElementById("scrollableDiv");
+      const scrollableDiv = scrollableDivRef.current;
       if (autoScrollContent) {
         interval = setInterval(function () {
-          scrollableDiv.scrollTop++;
+          scrollableDiv.scrollTo(0, ++scrollableDiv.scrollTop);
         }, (1 * 100) / scrollSpeed);
       } else {
         clearInterval(interval);
@@ -76,8 +84,12 @@ function BookContent({ BookID, maximazed, bookContent, formFontSize, autoScrollC
       onClick={(e) => {
         if (maximazed) {
           e.preventDefault();
-          const scrollableDiv = document.getElementById("scrollableDiv");
-          scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
+          if (autoScrollContent) {
+            handleAutoScrollContent();
+          } else {
+            const scrollableDiv = document.getElementById("scrollableDiv");
+            scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
+          }
         }
       }}
       style={{ fontSize: `${formFontSize}em` }}

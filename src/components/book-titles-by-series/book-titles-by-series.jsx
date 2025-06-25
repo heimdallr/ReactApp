@@ -48,10 +48,8 @@ class BookTitlesBySeries extends Component {
             if (b[this.state.sortHeadID] === null) {
               return -1;
             }
-            if (a[this.state.sortHeadID] == a[this.state.sortHeadID] * 1)
-              a[this.state.sortHeadID] = a[this.state.sortHeadID] * 1;
-            if (b[this.state.sortHeadID] == b[this.state.sortHeadID] * 1)
-              b[this.state.sortHeadID] = b[this.state.sortHeadID] * 1;
+            if (a[this.state.sortHeadID] * 1 > 0) a[this.state.sortHeadID] = a[this.state.sortHeadID] * 1;
+            if (b[this.state.sortHeadID] * 1 > 0) b[this.state.sortHeadID] = b[this.state.sortHeadID] * 1;
             if (this.state.sortRevers) {
               return a[this.state.sortHeadID] < b[this.state.sortHeadID] ? 1 : -1;
             }
@@ -66,6 +64,13 @@ class BookTitlesBySeries extends Component {
         item.BookSize > 1000 * 1000
           ? `${(item.BookSize / 1024 / 1024).toFixed(1)} M`
           : `${(item.BookSize / 1024).toFixed(1)} k`;
+      const updateDate = item.UpdateDate
+        ? new Date(item.UpdateDate).toLocaleDateString("ru-RU", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        : "";
       return (
         <tr className={colorStyle} key={item.BookID}>
           <td
@@ -110,6 +115,9 @@ class BookTitlesBySeries extends Component {
           </td>
           <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
             {item.Lang === null ? "" : item.Lang}
+          </td>
+          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+            {updateDate}
           </td>
         </tr>
       );
@@ -162,6 +170,13 @@ class BookTitlesBySeries extends Component {
                   </th>
                   <th className="pl-2 pr-2" onClick={() => this.handleSortHead("Lang")}>
                     ⚐
+                  </th>
+                  <th
+                    title="В базе существует с..."
+                    className="pl-2 pr-2"
+                    onClick={() => this.handleSortHead("UpdateDate")}
+                  >
+                    ∃
                   </th>
                 </tr>
               </thead>

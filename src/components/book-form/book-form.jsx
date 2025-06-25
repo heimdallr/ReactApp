@@ -31,8 +31,6 @@ class BookForm extends Component {
     document.addEventListener("keydown", this.keydownFunction, false);
     this.setState({
       formFontSize: localStorage.getItem("userFontSize") ? localStorage.getItem("userFontSize") * 1 : 1.5,
-    });
-    this.setState({
       scrollSpeed: localStorage.getItem("scrollSpeed") ? localStorage.getItem("scrollSpeed") * 1 : 10,
     });
   }
@@ -228,7 +226,7 @@ class BookForm extends Component {
     localStorage.setItem("currentPosition", localStorage.getItem(BookID));
     this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
-      if (prevState.formFontSize <= 4) {
+      if (prevState.formFontSize <= 5) {
         localStorage.setItem("userFontSize", prevState.formFontSize + 0.1);
         return {
           formFontSize: prevState.formFontSize + 0.1,
@@ -330,6 +328,7 @@ class BookForm extends Component {
             formFontSize={formFontSize}
             autoScrollContent={autoScrollContent}
             scrollSpeed={scrollSpeed}
+            handleAutoScrollContent={this.handleAutoScrollContent}
           />
         ) : (
           <BookDescription
