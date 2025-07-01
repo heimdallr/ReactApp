@@ -19,7 +19,7 @@ class App extends Component {
     scope: "bookTitles",
     genres: [],
     groups: [],
-    selectedGroupID: 0,
+    selectedGroupID: null,
     selectedItemID: null,
     numberOfBooks: null,
   };
@@ -52,7 +52,7 @@ class App extends Component {
     //activate empty search
     if (
       (prevState.selectedGroupID !== this.state.selectedGroupID || prevState.searchTmp !== this.state.searchTmp) &&
-      this.state.selectedGroupID === 0 &&
+      !this.state.selectedGroupID &&
       this.state.search.length < 3
     ) {
       this.setState({ searchStats: { authors: 0, bookSeries: 0, bookTitles: 0 } });
@@ -67,8 +67,9 @@ class App extends Component {
   };
 
   getRecords = (search, selectedGroupID) => {
-    this.setState({ searchTmp: search });
-    this.apiData.getSearchStats({ search, selectedGroupID }).then((res) => this.setState({ ...res, loading: false }));
+    this.apiData
+      .getSearchStats({ search, selectedGroupID })
+      .then((res) => this.setState({ ...res, loading: false, searchTmp: search }));
   };
 
   handleScopeSelection = (scope) => {
@@ -142,20 +143,21 @@ class App extends Component {
           />
         )}
         <div className="card shadow ">
-          <div className="d-flex flex-wrap m-0 p-1 bg-secondary">
+          <div className="d-flex flex-wrap bg-secondary">
             <SearchPanel
               search={this.state.search}
               onSearchChange={this.onSearchChange}
               onFocus={() => this.handleGroupSelection(null)}
+              selectedGroupID={selectedGroupID}
             />
             {this.groups()}
-            <span className="text-light ml-3">∑ {this.state.numberOfBooks}</span>
+            <span className="text-light mr-1 ml-2">∑ {this.state.numberOfBooks}</span>
             {this.state.loading && <Spinner />}
           </div>
         </div>
 
         {authors || bookSeries || bookTitles ? (
-          <div className="card shadow mt-2">
+          <div className="card shadow mt-1 mb-1">
             <div className="card-title bg-secondary pl-1 pr-1 m-0">
               <ScopeSelector
                 handleScopeSelection={this.handleScopeSelection}

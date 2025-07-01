@@ -91,7 +91,7 @@ class BookTitlesBySeries extends Component {
             {item.Title}
           </td>
           {item.AuthorsNames.includes(",") ? (
-            <td>{item.AuthorsNames}</td>
+            <td onClick={() => this.props.handleSelectItem(item.BookID)}>{item.AuthorsNames}</td>
           ) : (
             <td
               className="text-info alias"

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./book-control.css";
+import BookNavigation from "../book-navigation/book-navigation";
 
 export class BookControl extends Component {
   render() {
@@ -12,10 +13,11 @@ export class BookControl extends Component {
       Title,
       readerPosition,
       bookContentLoading,
+      navTags,
     } = this.props;
     const readBook = (
       <span
-        className="btn btn-sm btn-outline-info ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
+        className="btn btn-sm read btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
         onClick={this.props.handleBookContent}
       >
         Читать
@@ -23,13 +25,14 @@ export class BookControl extends Component {
       </span>
     );
     const bookIsLoading = (
-      <span className="btn btn-sm btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline">
+      <span className="btn btn-sm loading btn-outline-info ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline">
         Загрузка
         {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
       </span>
     );
     return (
-      <div className="d-flex flex-row mb-1 justify-content-center form-header">
+      <div className="bookControl d-flex flex-row mb-1 justify-content-center form-header">
+        {navTags.length > 0 && displayBookContent && <BookNavigation navTags={navTags} />}
         {displayBookContent ? (
           // Return Back to form
           <span

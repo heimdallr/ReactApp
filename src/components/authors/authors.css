@@ -1,6 +1,5 @@
 .authors {
     max-height: calc(100vh - 8rem);
-
     margin: 0rem 0rem;
     background-image: linear-gradient(rgba(36, 42, 46, 0.8),
             rgba(36, 42, 46, 0.8));

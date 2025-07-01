@@ -10,6 +10,7 @@ function BookContent({
   autoScrollContent,
   scrollSpeed,
   handleAutoScrollContent,
+  handleNavTags,
 }) {
   const [body, setBody] = useState(""); //Prepared book content
   const scrollableDivRef = useRef(null); //Ref to book content div
@@ -79,25 +80,58 @@ function BookContent({
     };
   }, [scrollSpeed, body, autoScrollContent]);
 
-  return (
-    <div
-      onClick={(e) => {
-        if (maximazed) {
-          e.preventDefault();
-          if (autoScrollContent) {
-            handleAutoScrollContent();
-          } else {
-            const scrollableDiv = document.getElementById("scrollableDiv");
-            scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
+  useEffect(() => {
+    if (scrollableDivRef.current && body) {
+      const sections = scrollableDivRef.current.getElementsByClassName("section");
+      const navArray = [];
+      if (sections) {
+        let counter = 0;
+        for (let i = 0; i < sections.length; i++) {
+          if (sections[i].getElementsByClassName("title").length) {
+            if (sections[i].getElementsByClassName("title")[0].innerText) {
+              navArray[counter] = {
+                innerText: sections[i].getElementsByClassName("title")[0].innerText,
+                level: 0,
+                sectionID: i,
+              };
+              counter++;
+            }
           }
         }
-      }}
-      style={{ fontSize: `${formFontSize}em` }}
-      id="scrollableDiv"
-      className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}
-      dangerouslySetInnerHTML={{ __html: body }}
-      ref={scrollableDivRef}
-    ></div>
+      }
+      for (let i = 0; i < navArray.length; i++) {
+        for (let j = 0; j < navArray.length; j++) {
+          if (i !== j && sections[navArray[i].sectionID].contains(sections[navArray[j].sectionID])) {
+            navArray[j].level = navArray[i].level + 1;
+          }
+        }
+      }
+      // setNavTags(navArray);
+      handleNavTags(navArray);
+    }
+  }, [body, handleNavTags]);
+
+  return (
+    <>
+      <div
+        onClick={(e) => {
+          if (maximazed) {
+            e.preventDefault();
+            if (autoScrollContent) {
+              handleAutoScrollContent();
+            } else {
+              const scrollableDiv = document.getElementById("scrollableDiv");
+              scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
+            }
+          }
+        }}
+        style={{ fontSize: `${formFontSize}em` }}
+        id="scrollableDiv"
+        className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}
+        dangerouslySetInnerHTML={{ __html: body }}
+        ref={scrollableDivRef}
+      ></div>
+    </>
   );
 }
 

@@ -102,7 +102,7 @@ class BookTitles extends Component {
             {item.Title}
           </td>
           {item.AuthorsNames.includes(",") ? (
-            <td>{item.AuthorsNames}</td>
+            <td onClick={() => this.props.handleSelectItem(item.BookID)}>{item.AuthorsNames}</td>
           ) : (
             <td
               className="text-info alias"
@@ -155,7 +155,7 @@ class BookTitles extends Component {
     const { loading, titlesList } = this.state;
     return (
       <React.Fragment>
-        <div className="shadow mt-2 bookTitles overflow-auto col-auto text-center">
+        <div className="shadow bookTitles overflow-auto col-auto text-center">
           <div>
             {loading && <Spinner />}
             {titlesList.length > 0 ? (

@@ -1,0 +1,53 @@
+.bookNavigation {
+    position: fixed;
+    top: 2rem;
+    left: 1rem;
+    margin-inline: auto;
+    width: fit-content;
+    z-index: 999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: var(--color-light--1) rgba(36, 42, 46, 0.8);
+    scrollbar-width: thin;
+    max-height: calc(85vh - 2rem);
+    padding: 0.5rem;
+    background-color: #42484dee;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s, opacity 0.5s ease;
+    animation-name: bookNavigation;
+    animation-duration: 4s;
+}
+
+
+.bookControl:hover .bookNavigation {
+    visibility: visible;
+    transition: visibility 0s, opacity 0.5s ease;
+    opacity: 1;
+    animation-play-state: paused;
+}
+
+.bookNavigation:hover {
+    visibility: visible;
+    transition: visibility 0s, opacity 0.5s ease;
+    opacity: 1;
+    animation-play-state: paused;
+}
+
+@keyframes bookNavigation {
+    from {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    75% {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    to {
+        visibility: visible;
+        opacity: 0;
+
+    }
+}

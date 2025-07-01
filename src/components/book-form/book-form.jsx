@@ -25,6 +25,7 @@ class BookForm extends Component {
     formFontSize: 2,
     autoScrollContent: false,
     scrollSpeed: 10,
+    navTags: [],
   };
   componentDidMount() {
     this.getRecord();
@@ -37,7 +38,7 @@ class BookForm extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedItemID !== this.props.selectedItemID) {
-      this.setState({ bookContentLoading: true, loading: true });
+      this.setState({ bookContentLoading: true, loading: true, navTags: [] });
       this.getRecord();
     }
   }
@@ -269,6 +270,9 @@ class BookForm extends Component {
       }
     });
   };
+  handleNavTags = (navTags) => {
+    this.setState({ navTags });
+  };
 
   render() {
     const {
@@ -287,6 +291,7 @@ class BookForm extends Component {
       bookContentLoading,
       displayBookContent,
       bookCover,
+      navTags,
     } = this.state;
     const readerPosition = localStorage.getItem(BookID) * 1;
     const styleContentMaximazed = {
@@ -317,6 +322,7 @@ class BookForm extends Component {
           readerPosition={readerPosition}
           displayBookContent={displayBookContent}
           bookContentLoading={bookContentLoading}
+          navTags={navTags}
         />
 
         {displayBookContent && bookContent ? (
@@ -329,6 +335,7 @@ class BookForm extends Component {
             autoScrollContent={autoScrollContent}
             scrollSpeed={scrollSpeed}
             handleAutoScrollContent={this.handleAutoScrollContent}
+            handleNavTags={this.handleNavTags}
           />
         ) : (
           <BookDescription
