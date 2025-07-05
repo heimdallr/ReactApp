@@ -1,6 +1,6 @@
 .bookNavigation {
     position: fixed;
-    top: 2rem;
+    top: 1.9rem;
     left: 1rem;
     margin-inline: auto;
     width: fit-content;
@@ -40,7 +40,7 @@
         opacity: 1;
     }
 
-    75% {
+    85% {
         visibility: visible;
         opacity: 1;
     }

@@ -3,6 +3,16 @@ import "./book-control.css";
 import BookNavigation from "../book-navigation/book-navigation";
 
 export class BookControl extends Component {
+  state = {
+    contentsTableShow: true,
+  };
+
+  handlecontentsTableShow(show) {
+    this.setState({ contentsTableShow: show });
+  }
+  handleClickNavigation = () => {
+    this.setState({ contentsTableShow: false });
+  };
   render() {
     const {
       BookID,
@@ -15,6 +25,7 @@ export class BookControl extends Component {
       bookContentLoading,
       navTags,
     } = this.props;
+    const { contentsTableShow } = this.state;
     const readBook = (
       <span
         className="btn btn-sm read btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
@@ -31,8 +42,23 @@ export class BookControl extends Component {
       </span>
     );
     return (
-      <div className="bookControl d-flex flex-row mb-1 justify-content-center form-header">
-        {navTags.length > 0 && displayBookContent && <BookNavigation navTags={navTags} />}
+      <div
+        className="bookControl d-flex flex-row mb-1 justify-content-center form-header"
+        onMouseEnter={() => {
+          this.handlecontentsTableShow(true);
+        }}
+        onMouseLeave={() => {
+          this.handlecontentsTableShow(false);
+        }}
+      >
+        {navTags.length > 0 && displayBookContent && contentsTableShow && (
+          <BookNavigation
+            navTags={navTags}
+            BookID={BookID}
+            handleClickNavigation={this.handleClickNavigation}
+            readerPosition={readerPosition}
+          />
+        )}
         {displayBookContent ? (
           // Return Back to form
           <span
