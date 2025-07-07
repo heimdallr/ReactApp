@@ -9,6 +9,7 @@ import BookTitles from "../book-titles";
 import BookSeries from "../book-series";
 import BookForm from "../book-form";
 import { withErrorBoundary } from "../hoc-helpers";
+import Tooltip from "../tooltip/tooltip";
 
 class App extends Component {
   state = {
@@ -113,15 +114,48 @@ class App extends Component {
 
   groups = () => {
     const groupsButtons = this.state.groups.map((item) => {
+      const groupInfo = (
+        <div className="bg-dark m-0">
+          {item.booksInGroup > 0 && (
+            <div className="card card-head bg-dark text-center m-1 p-1 ">
+              <span className="bg-info rounded-pill text-dark shadow mr-3 ml-3">({item.booksInGroup}) Книги</span>
+            </div>
+          )}
+          {item.authorsInGroup > 0 && (
+            <div className="card card-head bg-dark text-center m-1 p-1">
+              <span className="bg-info rounded-pill text-dark shadow mr-3 ml-3 ">({item.authorsInGroup}) Авторы</span>
+              <br />
+              {item.authorsListInGroup}
+            </div>
+          )}
+          {item.seriesInGroup > 0 && (
+            <div className="card card-head bg-dark text-center m-1 p-1">
+              <span className="bg-info rounded-pill text-dark shadow mr-3 ml-3">({item.seriesInGroup}) Серии</span>
+              <br />
+              {item.seriesListInGroup}
+            </div>
+          )}
+          {item.keywordsInGroup > 0 && (
+            <div className="card card-head bg-dark text-center m-1 p-1">
+              <span className="bg-info rounded-pill text-dark shadow mr-3 ml-3">
+                ({item.keywordsInGroup}) Кл. слова
+              </span>
+              <br />
+              {item.keywordsListInGroup}
+            </div>
+          )}
+        </div>
+      );
       return (
-        <ScopeSelector
-          key={item.GroupID}
-          handleScopeSelection={this.handleGroupSelection}
-          scopeID={item.GroupID}
-          scopeName={item.Title}
-          scopeQuantity={item.numberOfBooks}
-          scope={this.state.selectedGroupID}
-        />
+        <Tooltip direction="bottom" content={groupInfo} key={item.GroupID}>
+          <ScopeSelector
+            handleScopeSelection={this.handleGroupSelection}
+            scopeID={item.GroupID}
+            scopeName={item.Title}
+            scopeQuantity={item.numberOfBooks}
+            scope={this.state.selectedGroupID}
+          />
+        </Tooltip>
       );
     });
     return groupsButtons;

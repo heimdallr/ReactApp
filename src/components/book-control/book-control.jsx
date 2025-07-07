@@ -84,7 +84,7 @@ export class BookControl extends Component {
               <span className="mr-5">
                 <span
                   title="Уменьшить скорость прокрутки: клавиша минус во время прокрутки текста"
-                  className="bg-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
+                  className="btn-outline-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
                   onClick={() => {
                     this.props.handleDecScrollSpeed();
                   }}
@@ -93,9 +93,9 @@ export class BookControl extends Component {
                 </span>
                 <span
                   title="Автопрокрутка текста: Ins"
-                  className={`bg-${
-                    autoScrollContent ? "info" : "warning"
-                  } pl-1 pr-1 pt-0 pb-0 btn btn-sm text-dark align-self-baseline mr-1`}
+                  className={`btn-${
+                    autoScrollContent ? "info" : "outline-warning"
+                  } pl-1 pr-1 pt-0 pb-0 btn btn-sm text-light align-self-baseline mr-1`}
                   onClick={() => {
                     this.props.handleAutoScrollContent();
                   }}
@@ -104,7 +104,7 @@ export class BookControl extends Component {
                 </span>
                 <span
                   title="Увеличить скорость прокрутки: клавиша плюс во время прокрутки текста"
-                  className="mr-1 bg-warning p-0 btn btn-sm text-dark align-self-baseline"
+                  className="mr-1 btn-outline-warning p-0 btn btn-sm text-dark align-self-baseline"
                   onClick={() => {
                     this.props.handleIncScrollSpeed();
                   }}
@@ -116,7 +116,7 @@ export class BookControl extends Component {
               <span className="mr-5">
                 <span
                   title="Уменьшить размер шрифта: клавиша минус"
-                  className="bg-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
+                  className="btn-outline-warning p-0 btn btn-sm text-dark align-self-baseline mr-1"
                   onClick={() => {
                     this.props.handleDecFormFontSize(BookID);
                   }}
@@ -126,7 +126,7 @@ export class BookControl extends Component {
                 <span className="mr-1">👀</span>
                 <span
                   title="Увеличить размер шрифта: клавиша плюс"
-                  className="mr-1 bg-warning p-0 btn btn-sm text-dark align-self-baseline"
+                  className="mr-1 btn-outline-warning p-0 btn btn-sm text-dark align-self-baseline"
                   onClick={() => {
                     this.props.handleIncFormFontSize(BookID);
                   }}
@@ -137,7 +137,7 @@ export class BookControl extends Component {
               {/* Max Min */}
               <span
                 title="Enter"
-                className="mr-3 bg-warning p-0 btn btn-sm text-dark"
+                className="mr-3 btn-outline-warning p-0 btn btn-sm text-dark"
                 onClick={() => {
                   this.props.handleMaximazeBookContent(BookID);
                 }}
