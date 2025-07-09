@@ -3,7 +3,6 @@ import "./book-content.css";
 import fb2Parser from "../../xml-helpers/fb2-parser";
 
 function BookContent({
-  BookID,
   maximazed,
   bookContent,
   formFontSize,
@@ -11,6 +10,7 @@ function BookContent({
   scrollSpeed,
   handleAutoScrollContent,
   handleNavTags,
+  FileName,
 }) {
   const [body, setBody] = useState(""); //Prepared book content
   const scrollableDivRef = useRef(null); //Ref to book content div
@@ -40,10 +40,10 @@ function BookContent({
                 : ""
             }`
           : "";
-        localStorage.setItem(BookID, scrollPercent);
+        localStorage.setItem(FileName, scrollPercent);
       });
     }
-  }, [BookID, scrollSpeed, autoScrollContent]);
+  }, [FileName, scrollSpeed, autoScrollContent]);
 
   //Maximize || Minimize content
   useEffect(() => {
@@ -56,11 +56,11 @@ function BookContent({
       } else {
         scrollableDiv.scrollTo(
           0,
-          (localStorage.getItem(BookID) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
+          (localStorage.getItem(FileName) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
         );
       }
     }
-  }, [body, BookID, maximazed, formFontSize]);
+  }, [body, FileName, maximazed, formFontSize]);
 
   // Scroll content
   useEffect(() => {

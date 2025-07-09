@@ -60,7 +60,7 @@ class BookTitlesByAuthor extends Component {
     return result.map((item) => {
       const colorStyle = item.BookID === this.props.selectedBookID ? "text-dark bg-warning" : "text-light";
       const starRating = Array(item.LibRate * 1 + 1).join("☆");
-      const bookProgress = localStorage.getItem(item.BookID) * 1;
+      const bookProgress = localStorage.getItem(item.FileName) * 1;
       const bookSize =
         item.BookSize > 1000 * 1000
           ? `${(item.BookSize / 1024 / 1024).toFixed(1)} M`

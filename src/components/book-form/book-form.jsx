@@ -131,8 +131,8 @@ class BookForm extends Component {
     }));
   };
 
-  handleMaximazeBookContent = (BookID) => {
-    localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+  handleMaximazeBookContent = (FileName) => {
+    localStorage.setItem("currentPosition", localStorage.getItem(FileName));
 
     this.setState((prevState) => {
       return {
@@ -194,7 +194,7 @@ class BookForm extends Component {
     // Enter
     if (e.keyCode === 13 && this.state.displayBookContent && this.state.bookForm) {
       e.preventDefault();
-      this.handleMaximazeBookContent(this.state.bookForm.BookID);
+      this.handleMaximazeBookContent(this.state.bookForm.FileName);
     }
     // + ScrollSpeed
     if (e.keyCode === 107 && this.state.displayBookContent && this.state.bookForm && this.state.autoScrollContent) {
@@ -209,12 +209,12 @@ class BookForm extends Component {
     // + FontSize
     if (e.keyCode === 107 && this.state.displayBookContent && this.state.bookForm && !this.state.autoScrollContent) {
       e.preventDefault();
-      this.handleIncFormFontSize(this.state.bookForm.BookID);
+      this.handleIncFormFontSize(this.state.bookForm.FileName);
     }
     // - FontSize
     if (e.keyCode === 109 && this.state.displayBookContent && this.state.bookForm && !this.state.autoScrollContent) {
       e.preventDefault();
-      this.handleDecFormFontSize(this.state.bookForm.BookID);
+      this.handleDecFormFontSize(this.state.bookForm.FileName);
     }
     // Ins - autoscroll
     if (e.keyCode === 96 && this.state.displayBookContent && this.state.bookForm) {
@@ -223,8 +223,8 @@ class BookForm extends Component {
     }
   };
 
-  handleIncFormFontSize = (BookID) => {
-    localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+  handleIncFormFontSize = (FileName) => {
+    localStorage.setItem("currentPosition", localStorage.getItem(FileName));
     this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
       if (prevState.formFontSize <= 5) {
@@ -236,8 +236,8 @@ class BookForm extends Component {
     });
   };
 
-  handleDecFormFontSize = (BookID) => {
-    localStorage.setItem("currentPosition", localStorage.getItem(BookID));
+  handleDecFormFontSize = (FileName) => {
+    localStorage.setItem("currentPosition", localStorage.getItem(FileName));
     this.setState({ autoScrollContent: false });
     this.setState((prevState) => {
       if (prevState.formFontSize > 0.6) {
@@ -293,7 +293,7 @@ class BookForm extends Component {
       bookCover,
       navTags,
     } = this.state;
-    const readerPosition = localStorage.getItem(BookID) * 1;
+    const readerPosition = localStorage.getItem(FileName) * 1;
     const styleContentMaximazed = {
       position: "fixed",
       top: "50%",
@@ -314,7 +314,7 @@ class BookForm extends Component {
           handleMaximazeBookContent={this.handleMaximazeBookContent}
           handleSelectItem={this.props.handleSelectItem}
           handleBookContent={this.handleBookContent}
-          BookID={BookID}
+          FileName={FileName}
           autoScrollContent={autoScrollContent}
           scrollSpeed={scrollSpeed}
           maximazed={maximazed}
@@ -329,6 +329,7 @@ class BookForm extends Component {
           <BookContent
             apiData={this.props.apiData}
             BookID={BookID}
+            FileName={FileName}
             maximazed={maximazed}
             bookContent={bookContent}
             formFontSize={formFontSize}
