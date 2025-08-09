@@ -300,7 +300,7 @@ class BookForm extends Component {
       bookCover,
       navTags,
     } = this.state;
-    const { linkToExtBookReader, httpHost, httpPort } = this.props;
+    const { linkToExtBookReader } = this.props;
     const readerPosition = localStorage.getItem(FileName) * 1;
     const styleContentMaximazed = {
       position: "fixed",
@@ -360,8 +360,6 @@ class BookForm extends Component {
             bookContentLoading={bookContentLoading}
             bookCover={bookCover}
             linkToExtBookReader={linkToExtBookReader}
-            httpHost={httpHost}
-            httpPort={httpPort}
           />
         )}
       </span>

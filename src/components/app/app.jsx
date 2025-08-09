@@ -24,8 +24,6 @@ class App extends Component {
     selectedItemID: null,
     numberOfBooks: null,
     linkToExtBookReader: "",
-    httpHost: "",
-    httpPort: "",
   };
 
   apiData = new FetchBooks();
@@ -166,7 +164,7 @@ class App extends Component {
 
   render() {
     const { authors, bookSeries, bookTitles } = this.state.searchStats;
-    const { scope, searchTmp, selectedItemID, selectedGroupID, linkToExtBookReader, httpHost, httpPort } = this.state;
+    const { scope, searchTmp, selectedItemID, selectedGroupID, linkToExtBookReader } = this.state;
     return (
       <React.Fragment>
         {selectedItemID && (
@@ -177,8 +175,6 @@ class App extends Component {
             handleAuthorSelection={this.handleAuthorSelection}
             handleSeriesSelection={this.handleSeriesSelection}
             linkToExtBookReader={linkToExtBookReader}
-            httpHost={httpHost}
-            httpPort={httpPort}
           />
         )}
         <div className="card shadow ">

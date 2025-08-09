@@ -6,8 +6,6 @@ export class BookDescription extends Component {
     const {
       bookForm: { BookID, SeriesTitle, LibRate, FileName, BookSize, Genres, Ext },
       linkToExtBookReader,
-      httpHost,
-      httpPort,
       annotation,
       publisher,
       city,
@@ -107,9 +105,7 @@ export class BookDescription extends Component {
                   {linkToExtBookReader ? (
                     <a
                       className="btn btn-sm btn-outline-warning pt-0 pb-0 mr-1 shadow"
-                      href={`${linkToExtBookReader}http://${httpHost}${
-                        httpPort ? `:${httpPort}` : ""
-                      }/Images/fb2/${BookID}`}
+                      href={`${linkToExtBookReader.replace("%1", BookID)}`}
                       target="_blank"
                     >
                       {Ext} (ext)
