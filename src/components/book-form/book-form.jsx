@@ -47,6 +47,13 @@ class BookForm extends Component {
     document.removeEventListener("keydown", this.keydownFunction, false);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.selectedItemID !== nextProps.selectedItemID || this.state !== nextState) {
+      return true;
+    }
+    return false;
+  }
+
   getRecord = () => {
     this.setState({
       loading: true,
@@ -293,6 +300,7 @@ class BookForm extends Component {
       bookCover,
       navTags,
     } = this.state;
+    const { linkToExtBookReader, httpHost, httpPort } = this.props;
     const readerPosition = localStorage.getItem(FileName) * 1;
     const styleContentMaximazed = {
       position: "fixed",
@@ -300,7 +308,6 @@ class BookForm extends Component {
       left: "50%",
       zIndex: 1,
     };
-
     const content = loading ? (
       <Spinner />
     ) : (
@@ -352,6 +359,9 @@ class BookForm extends Component {
             seriesList={this.seriesList}
             bookContentLoading={bookContentLoading}
             bookCover={bookCover}
+            linkToExtBookReader={linkToExtBookReader}
+            httpHost={httpHost}
+            httpPort={httpPort}
           />
         )}
       </span>

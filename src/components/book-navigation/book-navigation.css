@@ -1,7 +1,7 @@
 .bookNavigation {
     position: fixed;
     top: 1.9rem;
-    left: 1rem;
+    left: 1px;
     margin-inline: auto;
     width: fit-content;
     z-index: 999;
@@ -9,7 +9,9 @@
     overflow-x: hidden;
     scrollbar-color: var(--color-light--1) rgba(36, 42, 46, 0.8);
     scrollbar-width: thin;
-    max-height: calc(85vh - 2rem);
+    /* max-height: 100%; */
+    max-height: calc(100% - 1.9rem - 1px);
+    max-width: 80%;
     padding: 0.5rem;
     background-color: #42484dee;
     visibility: hidden;

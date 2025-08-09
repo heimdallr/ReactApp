@@ -5,6 +5,9 @@ export class BookDescription extends Component {
   render() {
     const {
       bookForm: { BookID, SeriesTitle, LibRate, FileName, BookSize, Genres, Ext },
+      linkToExtBookReader,
+      httpHost,
+      httpPort,
       annotation,
       publisher,
       city,
@@ -101,6 +104,19 @@ export class BookDescription extends Component {
                   >
                     {Ext} (только текст)
                   </a>
+                  {linkToExtBookReader ? (
+                    <a
+                      className="btn btn-sm btn-outline-warning pt-0 pb-0 mr-1 shadow"
+                      href={`${linkToExtBookReader}http://${httpHost}${
+                        httpPort ? `:${httpPort}` : ""
+                      }/Images/fb2/${BookID}`}
+                      target="_blank"
+                    >
+                      {Ext} (ext)
+                    </a>
+                  ) : (
+                    <></>
+                  )}
                 </td>
               </tr>
             </tbody>

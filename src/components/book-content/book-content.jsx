@@ -14,7 +14,6 @@ function BookContent({
 }) {
   const [body, setBody] = useState(""); //Prepared book content
   const scrollableDivRef = useRef(null); //Ref to book content div
-
   //Parse fb2
   useEffect(() => {
     setBody(fb2Parser(bookContent));
@@ -25,23 +24,27 @@ function BookContent({
     if (scrollableDivRef.current) {
       const scrollableDiv = scrollableDivRef.current;
       const progress = document.getElementById("progress");
-      scrollableDiv.addEventListener("scroll", () => {
-        const totalSeconds =
-          (scrollableDiv.scrollHeight - scrollableDiv.scrollTop - scrollableDiv.clientHeight) / (scrollSpeed * 10);
-        let date = new Date(1970, 0, 0, 0, 0, +totalSeconds || 0);
-        const scrollPercent =
-          (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
-        progress.innerHTML = scrollPercent
-          ? `${autoScrollContent ? `🐾` : ""} ${scrollPercent.toFixed(3)}% ${
-              autoScrollContent
-                ? `🐾  <span class="ml-5">${Math.floor(totalSeconds / 3600 / 24) || ""} ${
-                    Math.floor(totalSeconds / 3600 / 24) ? "д." : ""
-                  }   ${date.toLocaleTimeString()}</span>`
-                : ""
-            }`
-          : "";
-        localStorage.setItem(FileName, scrollPercent);
-      });
+      scrollableDiv.addEventListener(
+        "scroll",
+        () => {
+          const totalSeconds =
+            (scrollableDiv.scrollHeight - scrollableDiv.scrollTop - scrollableDiv.clientHeight) / (scrollSpeed * 10);
+          let date = new Date(1970, 0, 0, 0, 0, +totalSeconds || 0);
+          const scrollPercent =
+            (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
+          progress.innerHTML = scrollPercent
+            ? `${autoScrollContent ? `🐾` : ""} ${scrollPercent.toFixed(3)}% ${
+                autoScrollContent
+                  ? `🐾  <span class="ml-5">${Math.floor(totalSeconds / 3600 / 24) || ""} ${
+                      Math.floor(totalSeconds / 3600 / 24) ? "д." : ""
+                    }   ${date.toLocaleTimeString()}</span>`
+                  : ""
+              }`
+            : "";
+          localStorage.setItem(FileName, scrollPercent);
+        },
+        { passive: true }
+      );
     }
   }, [FileName, scrollSpeed, autoScrollContent]);
 
