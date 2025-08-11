@@ -4,14 +4,11 @@ import BookNavigation from "../book-navigation/book-navigation";
 
 export class BookControl extends Component {
   state = {
-    contentsTableShow: true,
+    contentsTableSelected: true,
   };
 
-  handlecontentsTableShow(show) {
-    this.setState({ contentsTableShow: show });
-  }
-  handleClickNavigation = () => {
-    this.setState({ contentsTableShow: false });
+  handleNavigationHoover = () => {
+    this.setState({ contentsTableSelected: true });
   };
   render() {
     const {
@@ -25,7 +22,7 @@ export class BookControl extends Component {
       navTags,
       FileName,
     } = this.props;
-    const { contentsTableShow } = this.state;
+
     const readBook = (
       <span
         className="btn btn-sm read btn-outline-warning ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
@@ -42,44 +39,30 @@ export class BookControl extends Component {
       </span>
     );
     return (
-      <div
-        className="bookControl d-flex flex-row mb-1 justify-content-center form-header"
-        onMouseEnter={() => {
-          this.handlecontentsTableShow(true);
-        }}
-        onMouseLeave={() => {
-          this.handlecontentsTableShow(false);
-        }}
-      >
-        {navTags.length > 0 && displayBookContent && contentsTableShow && (
-          <BookNavigation
-            navTags={navTags}
-            FileName={FileName}
-            handleClickNavigation={this.handleClickNavigation}
-            readerPosition={readerPosition}
-          />
-        )}
+      <div className="bookControl d-flex flex-row mb-1 justify-content-center form-header">
         {displayBookContent ? (
           // Return Back to form
-          <span
-            className="btn btn-sm btn-outline-info ml-3 mt-1 pt-0 pb-0 mr-auto align-self-baseline"
-            onClick={this.props.handleBookContent}
-          >
-            Назад
-          </span>
-        ) : (
-          <>{bookContentLoading ? bookIsLoading : readBook}</>
-        )}
+          <>
+            <span
+              className="btn btn-sm btn-outline-info ml-3 mt-1 pt-0 pb-0 align-self-baseline"
+              onClick={this.props.handleBookContent}
+            >
+              Назад
+            </span>
+            <span
+              className="navigate mr-auto align-self-baseline btn btn-sm btn-outline-info ml-2 mt-1 pt-0 pb-0"
+              onMouseEnter={() => {
+                this.handleNavigationHoover();
+              }}
+            >
+              Навигация
+              {navTags.length > 0 && displayBookContent && (
+                <BookNavigation navTags={navTags} FileName={FileName} readerPosition={readerPosition} />
+              )}
+            </span>
+            <span id="progress" className="text-warning p-0 pb-0 mt-1"></span>
 
-        {/* Progress */}
-        {displayBookContent ? (
-          <span id="progress" className="text-warning p-0 pb-0 mt-1"></span>
-        ) : (
-          <div className="text-center h2 neon-text pl-3 pr-3 mr-1 ml-1">{Title}</div>
-        )}
-        <span className="ml-auto p-0 align-self-baseline mr-1 mt-1 align-self-baseline">
-          {displayBookContent ? (
-            <span>
+            <span className="ml-auto p-0 align-self-baseline mr-1 mt-1">
               {/* AutoscrollContent */}
               <span className="mr-5">
                 <span
@@ -118,7 +101,7 @@ export class BookControl extends Component {
                   title="Уменьшить размер шрифта: клавиша минус"
                   className="btn-info p-0 btn btn-sm text-dark align-self-baseline mr-1"
                   onClick={() => {
-                    this.props.handleDecFormFontSize(FileName);
+                    this.props.handleDecFormFontSize();
                   }}
                 >
                   ➖
@@ -128,7 +111,7 @@ export class BookControl extends Component {
                   title="Увеличить размер шрифта: клавиша плюс"
                   className="mr-1 btn-info p-0 btn btn-sm text-dark align-self-baseline"
                   onClick={() => {
-                    this.props.handleIncFormFontSize(FileName);
+                    this.props.handleIncFormFontSize();
                   }}
                 >
                   ➕
@@ -139,22 +122,32 @@ export class BookControl extends Component {
                 title="Enter"
                 className="mr-3 btn-outline-warning p-0 btn btn-sm text-dark"
                 onClick={() => {
-                  this.props.handleMaximazeBookContent(FileName);
+                  this.props.handleMaximazeBookContent();
                 }}
               >
                 {maximazed ? "📜" : "📖"}
               </span>
             </span>
-          ) : null}
-          <span
-            title="Закрыть: Esc"
-            className="bg-info p-0 btn btn-sm"
-            onClick={() => {
-              this.props.handleSelectItem(null);
-            }}
-          >
-            ❌
-          </span>
+          </>
+        ) : (
+          <>
+            {bookContentLoading ? bookIsLoading : readBook}
+            <div className="text-center h2 neon-text pl-3 pr-3 mr-1 ml-1">{Title}</div>
+          </>
+        )}
+
+        {/* Progress */}
+        {/* {displayBookContent ? <></> : } */}
+
+        {displayBookContent ? <></> : null}
+        <span
+          title="Закрыть: Esc"
+          className="bg-info p-0 btn btn-sm align-self-baseline mr-1 mt-1"
+          onClick={() => {
+            this.props.handleSelectItem(null);
+          }}
+        >
+          ❌
         </span>
       </div>
     );

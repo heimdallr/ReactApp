@@ -52,10 +52,19 @@ function BookContent({
   useEffect(() => {
     if (body && scrollableDivRef.current) {
       const scrollableDiv = document.getElementById("scrollableDiv");
-      if (localStorage.getItem("currentPosition")) {
-        const scrollPosition = localStorage.getItem("currentPosition");
-        scrollableDiv.scrollTo(0, (scrollPosition * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100);
-        localStorage.removeItem("currentPosition");
+      if (localStorage.getItem("currentObject")) {
+        const currentObject = localStorage.getItem("currentObject");
+        const currentObjectPosition = localStorage.getItem("currentObjectPosition");
+
+        const elCollection = scrollableDiv.getElementsByTagName("p");
+        const { top: elTop } = elCollection[currentObject].getBoundingClientRect();
+
+        scrollableDiv.scrollTo(
+          0,
+          scrollableDiv.scrollTop + elTop - currentObjectPosition - scrollableDiv.getBoundingClientRect().top
+        );
+        localStorage.removeItem("currentObject");
+        localStorage.removeItem("currentObjectPosition");
       } else {
         scrollableDiv.scrollTo(
           0,

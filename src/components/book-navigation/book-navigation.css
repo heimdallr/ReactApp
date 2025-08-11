@@ -22,7 +22,7 @@
 }
 
 
-.bookControl:hover .bookNavigation {
+.navigate:hover .bookNavigation {
     visibility: visible;
     transition: visibility 0s, opacity 0.5s ease;
     opacity: 1;

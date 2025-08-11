@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import "./book-navigation.css";
+import { useState } from "react";
 
-export default function BookNavigation({ navTags, FileName, handleClickNavigation }) {
+export default function BookNavigation({ navTags, FileName }) {
+  const scrollableDiv = document.getElementById("scrollableDiv");
+  const [, setCurrentSection] = useState(null);
   useEffect(() => {
     const el = document.getElementById("info");
     if (el)
@@ -30,8 +33,10 @@ export default function BookNavigation({ navTags, FileName, handleClickNavigatio
           )}
           <button
             onClick={() => {
-              document.getElementById("scrollableDiv").getElementsByClassName("section")[id].scrollIntoView();
-              handleClickNavigation();
+              scrollableDiv.getElementsByClassName("section")[id].scrollIntoView();
+              setTimeout(() => {
+                setCurrentSection(i);
+              }, 500);
             }}
             style={{
               marginLeft: `${item.level * 1.5}rem`,
