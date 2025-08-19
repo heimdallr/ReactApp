@@ -29,7 +29,16 @@ export default function BookNavigation({ navTags, FileName }) {
       return (
         <div key={i} id={bageColor} className="row p-0 m-0">
           {bageColor === "info" && (
-            <span style={{ marginLeft: `${item.level * 1.5 - 0.7}rem`, position: "absolute" }}>✔️</span>
+            <span
+              style={{
+                marginLeft: `${item.level * 1.5 - 0.5}rem`,
+                position: "absolute",
+                background: "white",
+                borderRadius: "8px",
+              }}
+            >
+              ✔️
+            </span>
           )}
           <button
             onClick={() => {
@@ -45,13 +54,10 @@ export default function BookNavigation({ navTags, FileName }) {
             className={`btn btn-sm alert-${itemColor} pt-0 pb-0 mb-1 d-flex text-left align-items-center`}
           >
             {item.innerText}
-            {bageColor === "info" ? (
-              ""
-            ) : (
-              <span className={`badge badge-${bageColor} ml-2 mr-0 pr-1 align-center shadow border border-dark`}>
-                {`${Number(item.heightPercentSize.toFixed(1))}%`}
-              </span>
-            )}
+
+            <span className={`badge badge-${bageColor} ml-2 mr-0 pr-1 align-center shadow border border-dark`}>
+              {`${Number(item.heightPercentSize.toFixed(1))}%`}
+            </span>
           </button>
         </div>
       );

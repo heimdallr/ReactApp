@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import "./book-content.css";
 import fb2Parser from "../../xml-helpers/fb2-parser";
+import BookContentBody from "../book-content-body/book-content-body";
 
 function BookContent({
   maximazed,
@@ -13,7 +14,6 @@ function BookContent({
   FileName,
 }) {
   const [body, setBody] = useState(""); //Prepared book content
-  const scrollableDivRef = useRef(null); //Ref to book content div
   //Parse fb2
   useEffect(() => {
     setBody(fb2Parser(bookContent));
@@ -21,9 +21,10 @@ function BookContent({
 
   //Display scroll progress and update on scroll event
   useEffect(() => {
-    if (scrollableDivRef.current) {
-      const scrollableDiv = scrollableDivRef.current;
+    const scrollableDiv = document.getElementById("scrollableDiv");
+    if (scrollableDiv) {
       const progress = document.getElementById("progress");
+
       scrollableDiv.addEventListener(
         "scroll",
         () => {
@@ -50,8 +51,8 @@ function BookContent({
 
   //Maximize || Minimize content
   useEffect(() => {
-    if (body && scrollableDivRef.current) {
-      const scrollableDiv = document.getElementById("scrollableDiv");
+    const scrollableDiv = document.getElementById("scrollableDiv");
+    if (body && scrollableDiv) {
       if (localStorage.getItem("currentObject")) {
         const currentObject = localStorage.getItem("currentObject");
         const currentObjectPosition = localStorage.getItem("currentObjectPosition");
@@ -77,8 +78,8 @@ function BookContent({
   // Scroll content
   useEffect(() => {
     let interval = null;
-    if (body && scrollableDivRef.current) {
-      const scrollableDiv = scrollableDivRef.current;
+    const scrollableDiv = document.getElementById("scrollableDiv");
+    if (body && scrollableDiv) {
       if (autoScrollContent) {
         interval = setInterval(function () {
           scrollableDiv.scrollTo(0, ++scrollableDiv.scrollTop);
@@ -93,10 +94,11 @@ function BookContent({
   }, [scrollSpeed, body, autoScrollContent]);
 
   useEffect(() => {
-    if (scrollableDivRef.current && body) {
-      const sections = scrollableDivRef.current.getElementsByClassName("section");
+    const scrollableDiv = document.getElementById("scrollableDiv");
+    if (scrollableDiv && body) {
+      const sections = scrollableDiv.getElementsByClassName("section");
       const navArray = [];
-      const { height, top } = scrollableDivRef.current.firstElementChild.getBoundingClientRect();
+      const { height, top } = scrollableDiv.firstElementChild.getBoundingClientRect();
       //get sections info
       if (sections) {
         let counter = 0;
@@ -109,8 +111,8 @@ function BookContent({
                 sectionID: i,
                 size: sections[i].getBoundingClientRect().height,
                 heightPercentSize:
-                  ((sections[i].getBoundingClientRect().top - top - scrollableDivRef.current.clientHeight / 2) /
-                    (height - scrollableDivRef.current.clientHeight)) *
+                  ((sections[i].getBoundingClientRect().top - top - scrollableDiv.clientHeight / 2) /
+                    (height - scrollableDiv.clientHeight)) *
                   100,
                 sectionHeightPercentSize: (sections[i].getBoundingClientRect().height / height) * 100,
               };
@@ -136,23 +138,19 @@ function BookContent({
       <div
         id="scrollableDiv"
         className={`book-content ${maximazed ? "maxContent" : "pageContent"}`}
-        ref={scrollableDivRef}
-      >
-        <div
-          onClick={(e) => {
-            if (maximazed) {
-              e.preventDefault();
-              if (autoScrollContent) {
-                handleAutoScrollContent();
-              } else {
-                const scrollableDiv = document.getElementById("scrollableDiv");
-                scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
-              }
+        onClick={(e) => {
+          if (maximazed) {
+            e.preventDefault();
+            if (autoScrollContent) {
+              handleAutoScrollContent();
+            } else {
+              const scrollableDiv = document.getElementById("scrollableDiv");
+              scrollableDiv.scrollTo(0, scrollableDiv.clientHeight + scrollableDiv.scrollTop - 30);
             }
-          }}
-          style={{ fontSize: `${formFontSize}em` }}
-          dangerouslySetInnerHTML={{ __html: body }}
-        ></div>
+          }
+        }}
+      >
+        <BookContentBody body={body} formFontSize={formFontSize} />
       </div>
     </>
   );

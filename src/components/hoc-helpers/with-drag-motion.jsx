@@ -9,7 +9,7 @@ const WithDragMotion = (props) => {
     bottom: height / 2,
   };
   return (
-    <motion.div
+    <motion.span
       style={{
         position: "fixed",
         top: "50%",
@@ -22,7 +22,7 @@ const WithDragMotion = (props) => {
       transition={{ type: "spring", duration: 1 }}
     >
       {props.children}
-    </motion.div>
+    </motion.span>
   );
 };
 

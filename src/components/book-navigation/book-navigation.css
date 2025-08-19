@@ -17,8 +17,8 @@
     visibility: hidden;
     opacity: 0;
     transition: visibility 1s, opacity 0.5s ease;
-    animation-name: bookNavigation;
-    animation-duration: 4s;
+    /* animation-name: bookNavigation; */
+    /* animation-duration: 4s; */
 }
 
 
@@ -26,14 +26,14 @@
     visibility: visible;
     transition: visibility 0s, opacity 0.5s ease;
     opacity: 1;
-    animation-play-state: paused;
+    /* animation-play-state: paused; */
 }
 
 .bookNavigation:hover {
     visibility: visible;
     transition: visibility 0s, opacity 0.5s ease;
     opacity: 1;
-    animation-play-state: paused;
+    /* animation-play-state: paused; */
 }
 
 @keyframes bookNavigation {

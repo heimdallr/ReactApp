@@ -354,8 +354,6 @@ class BookForm extends Component {
 
         {displayBookContent && bookContent ? (
           <BookContent
-            apiData={this.props.apiData}
-            BookID={BookID}
             FileName={FileName}
             maximazed={maximazed}
             bookContent={bookContent}
