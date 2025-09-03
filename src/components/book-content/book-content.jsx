@@ -16,7 +16,8 @@ function BookContent({
   const [body, setBody] = useState(""); //Prepared book content
   //Parse fb2
   useEffect(() => {
-    setBody(fb2Parser(bookContent));
+    const body = fb2Parser(bookContent);
+    setBody(body);
   }, [bookContent]);
 
   //Display scroll progress and update on scroll event

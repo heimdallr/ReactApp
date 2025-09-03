@@ -32,7 +32,7 @@ function nodeReplace(text) {
     "</div>",
     "<div class='title text-center p-0 m-0'>",
     "</div>",
-    "<div class='card section text-dark p-1 m-1 shadow'>",
+    "<div class='card section text-dark p-1 m-1'>",
     "</div>",
     "<br/>",
     "<div class='poem card alert-secondary text-dark ml-auto mr-auto mt-2 mb-2 pl-1 pr-1 shadow col-auto'>",
@@ -60,6 +60,8 @@ function nodeReplace(text) {
   for (let i = 0; i < searchTerms.length; i++) {
     const searchTerm = searchTerms[i];
     const replacement = replacements[i];
+
+    // var re = new RegExp(`${searchTerm}[.]*[>]`, "g");
     updatedText = updatedText.replaceAll(searchTerm, replacement);
   }
   return updatedText;

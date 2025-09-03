@@ -120,7 +120,7 @@ export class BookControl extends Component {
               {/* Max Min */}
               <span
                 title="Enter"
-                className="mr-3 btn-outline-warning p-0 btn btn-sm text-dark"
+                className="mr-3 bg-info p-0 btn btn-sm text-dark"
                 onClick={() => {
                   this.props.handleMaximazeBookContent();
                 }}

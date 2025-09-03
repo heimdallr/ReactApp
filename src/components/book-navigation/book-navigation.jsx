@@ -33,8 +33,6 @@ export default function BookNavigation({ navTags, FileName }) {
               style={{
                 marginLeft: `${item.level * 1.5 - 0.5}rem`,
                 position: "absolute",
-                background: "white",
-                borderRadius: "8px",
               }}
             >
               ✔️

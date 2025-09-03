@@ -15,13 +15,13 @@ function fb2Parser(bookContent) {
   let bodyNotes = null;
   try {
     text = bookContent.slice(bookContent.indexOf("<body>"), bookContent.lastIndexOf("</body>") + 7);
-    // text = replaceAllText(text, searchTerms, replacements);
+
     text = nodeReplace(text);
     if (bookContent.indexOf("<binary")) {
       binary = parser.parse(bookContent.slice(bookContent.indexOf("<binary"), bookContent.indexOf("</FictionBook>")));
       if (Array.isArray(binary.binary)) {
         binary.binary.map(function (item) {
-          const regex = new RegExp('<image (.+):href="#' + item["@_id"] + '"/>', "g");
+          const regex = new RegExp('<image (.):href="#' + item["@_id"] + '"/>', "g");
           if (text.match(regex)) {
             text = text.replaceAll(
               regex,
@@ -31,23 +31,31 @@ function fb2Parser(bookContent) {
         });
       }
     }
-    if (bookContent.indexOf('<body name="notes">')) {
-      bodyNotes = parser.parse(
-        bookContent.slice(bookContent.indexOf('<body name="notes">'), bookContent.lastIndexOf("</body>") + 7)
+
+    // if (bookContent.indexOf('<body name="notes">')) {
+    if (bookContent.includes('<body name="notes">')) {
+      const notes = bookContent.slice(
+        bookContent.indexOf('<body name="notes">'),
+        bookContent.lastIndexOf("</body>") + 7
       );
-      if (bodyNotes.body && Array.isArray(bodyNotes.body.section)) {
-        bodyNotes.body.section.map(function (item) {
-          const regex = new RegExp('<a (.+):href="#' + item["@_id"] + '(.+)">', "g");
-          if (text.match(regex)) {
-            text = text.replaceAll(
-              regex,
-              `<a ${typeof item["p"] === "string" ? `title="${item["p"]}"` : ""} href="#${item["@_id"]}">`
-            );
-          }
-        });
-      }
+      bodyNotes = parser.parse(notes);
+      console.log(bodyNotes.body);
+
+      // if (bodyNotes.body && Array.isArray(bodyNotes.body.section)) {
+      // bodyNotes.body.section.map(function (item) {
+
+      // const regex = new RegExp('<a (.):href="#' + item["@_id"] + '">', "g");
+      // if (text.match(regex)) {
+      //       text = text.replaceAll(
+      //         regex,
+      //         `<a ${typeof item["p"] === "string" ? `title="${item["p"]}"` : ""} href="#${item["@_id"]}">`
+      //       );
+      // }
+      // });
+      // }
     }
     if (text) {
+      console.log(4);
       return text;
     } else {
       return "Книга не найдена";
