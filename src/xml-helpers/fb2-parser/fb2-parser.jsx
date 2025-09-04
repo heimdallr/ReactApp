@@ -12,9 +12,9 @@ const parser = new XMLParser(options);
 function fb2Parser(bookContent) {
   let binary = null;
   let text = null;
-  let bodyNotes = null;
+  // let bodyNotes = null;
   try {
-    text = bookContent.slice(bookContent.indexOf("<body>"), bookContent.lastIndexOf("</body>") + 7);
+    text = bookContent.slice(bookContent.indexOf("<body"), bookContent.lastIndexOf("</body>") + 7);
 
     text = nodeReplace(text);
     if (bookContent.indexOf("<binary")) {
@@ -34,16 +34,13 @@ function fb2Parser(bookContent) {
 
     // if (bookContent.indexOf('<body name="notes">')) {
     if (bookContent.includes('<body name="notes">')) {
-      const notes = bookContent.slice(
-        bookContent.indexOf('<body name="notes">'),
-        bookContent.lastIndexOf("</body>") + 7
-      );
-      bodyNotes = parser.parse(notes);
-      console.log(bodyNotes.body);
-
+      // const notes = bookContent.slice(
+      //   bookContent.indexOf('<body name="notes">'),
+      //   bookContent.lastIndexOf("</body>") + 7
+      // );
+      // bodyNotes = parser.parse(notes);
       // if (bodyNotes.body && Array.isArray(bodyNotes.body.section)) {
       // bodyNotes.body.section.map(function (item) {
-
       // const regex = new RegExp('<a (.):href="#' + item["@_id"] + '">', "g");
       // if (text.match(regex)) {
       //       text = text.replaceAll(
@@ -55,7 +52,6 @@ function fb2Parser(bookContent) {
       // }
     }
     if (text) {
-      console.log(4);
       return text;
     } else {
       return "Книга не найдена";
