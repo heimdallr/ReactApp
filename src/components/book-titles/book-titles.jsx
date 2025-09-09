@@ -125,6 +125,9 @@ class BookTitles extends Component {
             {item.SeqNumber === null ? "" : item.SeqNumber}
           </td>
           <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+            {item.Year === null ? "" : item.Year}
+          </td>
+          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
             {item.BookSize === null ? "" : bookSize}
           </td>
           <td onClick={() => this.props.handleSelectItem(item.BookID)}>{item.Genres === null ? "" : item.Genres}</td>
@@ -180,6 +183,9 @@ class BookTitles extends Component {
                     </th>
                     <th className="pl-2 pr-2" onClick={() => this.handleSortHead("SeqNumber")}>
                       #
+                    </th>
+                    <th className="pl-2 pr-2" onClick={() => this.handleSortHead("Year")}>
+                      Год
                     </th>
                     <th className="pl-2 pr-2" onClick={() => this.handleSortHead("BookSize")}>
                       Размер

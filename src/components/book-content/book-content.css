@@ -29,13 +29,20 @@ p {
     hyphens: auto;
 }
 
+.section p:first-child {
+    margin-top: 3rem;
+}
+
 .title {
     font-size: 1.5em;
 }
 
 .title p {
     text-indent: 0rem;
+}
 
+.title p:last-child {
+    padding-bottom: 3rem;
 }
 
 .book-content .title h2 {
@@ -70,6 +77,7 @@ p {
 .poem {
     border-color: lightgray;
     border-width: 2px;
+    border-radius: 15px;
     --s: 70px;
     /* control the size */
     --c: #6B534422;
@@ -88,9 +96,25 @@ p {
 
 }
 
-img {
-    background-color: wheat;
+.image {
+    /* background-color: wheat; */
+    box-shadow: -1px -5px 20px black;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+    transition: all 1.5s ease-out;
 }
+
+.image:hover {
+    box-shadow: 0px 5px 20px black;
+    transition: all 1.5s ease-out;
+    transform: scale(1.02);
+
+}
+
+br {
+    margin: 1rem;
+}
+
 
 .section {
     position: relative;
@@ -101,4 +125,26 @@ img {
     border-color: black;
     box-shadow: 0px -10px 30px black;
     border-radius: 10px;
+
+}
+
+.section p:last-child {
+    padding-bottom: 2rem;
+}
+
+.cite {
+    font-style: italic;
+    border-color: black;
+    background-color: whitesmoke;
+    background-image:
+        linear-gradient(90deg, transparent 79px, #bbbbbb 79px, #bbbbbb 81px, transparent 81px),
+        linear-gradient(#eee .1em, transparent .1em);
+    background-size: 100% 1.2em;
+    color: darkblue;
+    border-radius: 5px;
+    padding-left: 5rem;
+    padding-right: 2rem;
+    padding-bottom: 1rem;
+    margin: 2rem;
+    box-shadow: 0px -10px 30px black;
 }

@@ -5,6 +5,7 @@ import { WithDragMotion, withErrorBoundary } from "../hoc-helpers";
 import BookContent from "../book-content";
 import BookControl from "../book-control/book-control";
 import BookDescription from "../book-description/book-description";
+import fb2Parser from "../../xml-helpers/fb2-parser";
 
 class BookForm extends Component {
   state = {
@@ -85,9 +86,9 @@ class BookForm extends Component {
   };
 
   getBookContent = (selectedItemID) => {
-    this.props.apiData
-      .getBook({ BookID: selectedItemID })
-      .then((res) => this.setState({ bookContent: res, bookContentLoading: false }));
+    this.props.apiData.getBook({ BookID: selectedItemID }).then((res) => {
+      this.setState({ bookContentLoading: false, bookContent: fb2Parser(res) });
+    });
   };
 
   authorsList = () => {

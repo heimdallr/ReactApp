@@ -12,7 +12,7 @@ const parser = new XMLParser(options);
 function fb2Parser(bookContent) {
   let binary = null;
   let text = null;
-  // let bodyNotes = null;
+  let bodyNotes = null;
   try {
     text = bookContent.slice(bookContent.indexOf("<body"), bookContent.lastIndexOf("</body>") + 7);
 
@@ -25,31 +25,39 @@ function fb2Parser(bookContent) {
           if (text.match(regex)) {
             text = text.replaceAll(
               regex,
-              `<div class="text-center ml-auto mr-auto shadow col-auto mb-2"><img class="shadow m-2" src="data:image/png;base64, ${item["#text"]}" alt="Red dot"/></div>`
+              `<div class="text-center image ml-auto mr-auto col-auto p-0"><img class="" src="data:image/png;base64, ${item["#text"]}" alt="Red dot"/></div>`
             );
           }
         });
       }
     }
 
-    // if (bookContent.indexOf('<body name="notes">')) {
-    if (bookContent.includes('<body name="notes">')) {
-      // const notes = bookContent.slice(
-      //   bookContent.indexOf('<body name="notes">'),
-      //   bookContent.lastIndexOf("</body>") + 7
-      // );
-      // bodyNotes = parser.parse(notes);
-      // if (bodyNotes.body && Array.isArray(bodyNotes.body.section)) {
-      // bodyNotes.body.section.map(function (item) {
-      // const regex = new RegExp('<a (.):href="#' + item["@_id"] + '">', "g");
-      // if (text.match(regex)) {
-      //       text = text.replaceAll(
-      //         regex,
-      //         `<a ${typeof item["p"] === "string" ? `title="${item["p"]}"` : ""} href="#${item["@_id"]}">`
-      //       );
-      // }
-      // });
-      // }
+    if (bookContent.indexOf('<body name="notes">')) {
+      if (bookContent.includes('<body name="notes">')) {
+        const notes = bookContent.slice(
+          bookContent.indexOf('<body name="notes">'),
+          bookContent.lastIndexOf("</body>") + 7
+        );
+        // const regex = new RegExp('(.):href="#', "g");
+        // text = text.replaceAll(regex, ' href="#');
+
+        bodyNotes = parser.parse(notes);
+        if (bodyNotes.body && Array.isArray(bodyNotes.body.section)) {
+          bodyNotes.body.section.map((item) => {
+            const regex = new RegExp('<a( type="note")?( (.):href="#' + item["@_id"] + '"){1}( type="note")?>', "g");
+            // if (text.match(regex)) {
+            text = text.replace(
+              regex,
+              `<a ${
+                typeof item["p"] === "string"
+                  ? `title="${item["p"]}"`
+                  : `title="${item["p"] !== undefined && item["p"]["#text"] !== undefined ? item["p"]["#text"] : ""}"`
+              } href="#${item["@_id"]}">`
+            );
+            // }
+          });
+        }
+      }
     }
     if (text) {
       return text;

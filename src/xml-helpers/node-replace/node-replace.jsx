@@ -47,7 +47,7 @@ function nodeReplace(text) {
     "</div>",
     "<div class='subtitle text-center col-auto ml-auto mr-auto pt-0'>",
     "</div>",
-    "<div class='cite text-center col-auto ml-auto mr-auto pt-0'>",
+    "<div class='cite col-auto '>",
     "</div>",
     "<span class='text-author ml-auto mr-auto mt-1 mb-1 p-1 col-auto font-italic'>",
     "</span>",

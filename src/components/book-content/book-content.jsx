@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./book-content.css";
-import fb2Parser from "../../xml-helpers/fb2-parser";
 import BookContentBody from "../book-content-body/book-content-body";
+import { delay } from "framer-motion";
 
 function BookContent({
   maximazed,
@@ -13,13 +13,6 @@ function BookContent({
   handleNavTags,
   FileName,
 }) {
-  const [body, setBody] = useState(""); //Prepared book content
-  //Parse fb2
-  useEffect(() => {
-    const body = fb2Parser(bookContent);
-    setBody(body);
-  }, [bookContent]);
-
   //Display scroll progress and update on scroll event
   useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
@@ -53,7 +46,7 @@ function BookContent({
   //Maximize || Minimize content
   useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
-    if (body && scrollableDiv) {
+    if (bookContent && scrollableDiv) {
       if (localStorage.getItem("currentObject")) {
         const currentObject = localStorage.getItem("currentObject");
         const currentObjectPosition = localStorage.getItem("currentObjectPosition");
@@ -74,16 +67,16 @@ function BookContent({
         );
       }
     }
-  }, [body, FileName, maximazed, formFontSize]);
+  }, [bookContent, FileName, maximazed, formFontSize]);
 
   // Scroll content
   useEffect(() => {
     let interval = null;
     const scrollableDiv = document.getElementById("scrollableDiv");
-    if (body && scrollableDiv) {
+    if (bookContent && scrollableDiv) {
       if (autoScrollContent) {
         interval = setInterval(function () {
-          scrollableDiv.scrollTo(0, ++scrollableDiv.scrollTop);
+          scrollableDiv.scrollTo(0, (scrollableDiv.scrollTop += 1));
         }, (1 * 100) / scrollSpeed);
       } else {
         clearInterval(interval);
@@ -92,11 +85,12 @@ function BookContent({
     return () => {
       clearInterval(interval);
     };
-  }, [scrollSpeed, body, autoScrollContent]);
+  }, [scrollSpeed, bookContent, autoScrollContent]);
 
   useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
-    if (scrollableDiv && body) {
+    if (scrollableDiv && bookContent) {
+      delay(5000);
       const sections = scrollableDiv.getElementsByClassName("section");
       const navArray = [];
       const { height, top } = scrollableDiv.firstElementChild.getBoundingClientRect();
@@ -132,7 +126,7 @@ function BookContent({
       }
       handleNavTags(navArray);
     }
-  }, [body, handleNavTags]);
+  }, [bookContent, handleNavTags]);
 
   return (
     <>
@@ -151,7 +145,7 @@ function BookContent({
           }
         }}
       >
-        <BookContentBody body={body} formFontSize={formFontSize} />
+        <BookContentBody body={bookContent} formFontSize={formFontSize} />
       </div>
     </>
   );
