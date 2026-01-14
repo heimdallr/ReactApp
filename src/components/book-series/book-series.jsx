@@ -89,7 +89,7 @@ class BookSeries extends Component {
     const { loading, seriesList } = this.state;
     return (
       <React.Fragment>
-        <div className="d-flex shadow mt-0 text-center">
+        <div className="bookSeries2 d-flex flex-column flex-md-row shadow mt-0 text-center">
           <div className="bookSeries overflow-auto">
             {loading && <Spinner />}
             {seriesList.length > 0 ? (

@@ -63,7 +63,7 @@ input:focus {
 }
 
 .homepage {
-    height: calc(100vh - 2rem);
+    height: calc(100dvh - 2rem);
     background-image: linear-gradient(rgba(36, 42, 46, 0.8),
             rgba(36, 42, 46, 0.8));
     background-size: cover;
@@ -115,7 +115,7 @@ tr {
 }
 
 .coverImage {
-    max-height: calc(100vh / 2);
+    max-height: calc(100dvh / 2);
 }
 
 .annotation {

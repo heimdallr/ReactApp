@@ -16,7 +16,7 @@ function ScopeSelector({ handleScopeSelection, scopeID, scopeName, scopeQuantity
         }}
         className={`btn btn-${
           scope === scopeID ? "warning text-dark" : "dark text-light "
-        } ml-1 mr-1 pl-2 pr-2 pt-0 pb-0 shadow`}
+        } ml-1 mr-0 pl-1 pr-1 pt-0 pb-0 shadow`}
       >
         <b>{scopeName}:</b> {scopeWarning}
       </button>

@@ -16,7 +16,7 @@ export class BookDescription extends Component {
       bookCover,
     } = this.props;
     return (
-      <div className="d-flex align-items-center justify-content-center">
+      <div className="d-flex flex-column flex-md-row align-items-center justify-content-center">
         <table
           className="table-dark table-striped text-left"
           onClick={() => {

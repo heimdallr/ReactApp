@@ -91,7 +91,7 @@ class Authors extends Component {
     const { loading, authorsList } = this.state;
     return (
       <React.Fragment>
-        <div className="d-flex shadow mt-0 text-center">
+        <div className="d-flex flex-column flex-md-row shadow authors2 mt-0 text-center">
           <div className="authors">
             {loading && <Spinner />}
             {authorsList.length > 0 ? (

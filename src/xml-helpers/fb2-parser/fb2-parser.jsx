@@ -25,7 +25,7 @@ function fb2Parser(bookContent) {
           if (text.match(regex)) {
             text = text.replaceAll(
               regex,
-              `<div class="text-center image ml-auto mr-auto col-auto p-0"><img class="" src="data:image/png;base64, ${item["#text"]}" alt="Red dot"/></div>`
+              `<div class="text-center image ml-auto mr-auto col-auto p-0"><img src="data:image/png;base64, ${item["#text"]}" alt="img"/></div>`
             );
           }
         });

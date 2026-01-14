@@ -5,7 +5,7 @@
 .book-stat {
     max-width: 65vw;
     min-width: 25rem;
-    max-height: 80vh;
+    max-height: 80dvh;
     overflow-y: auto;
     overflow: auto;
     scrollbar-color: var(--color-dark--2) rgba(36, 42, 46, 0.8);

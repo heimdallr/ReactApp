@@ -10,8 +10,8 @@ class BookTitlesByAuthor extends Component {
   state = {
     loading: false,
     titlesList: [],
-    sortHeadID: "",
-    sortRevers: false,
+    sortHeadID: "Year",
+    sortRevers: true,
     selectedItemID: null,
   };
 

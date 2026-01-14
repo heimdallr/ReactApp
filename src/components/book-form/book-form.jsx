@@ -39,7 +39,7 @@ class BookForm extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedItemID !== this.props.selectedItemID) {
-      this.setState({ bookContentLoading: true, loading: true, navTags: [] });
+      // this.setState({ bookContentLoading: true, loading: true, navTags: [] });
       this.getRecord();
     }
   }
@@ -137,7 +137,7 @@ class BookForm extends Component {
     this.setState((prevState) => ({
       displayBookContent: !prevState.displayBookContent,
       autoScrollContent: false,
-      maximazed: false,
+      maximazed: window.innerWidth <= 768,
     }));
   };
 

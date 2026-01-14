@@ -1,5 +1,5 @@
 .authors {
-    max-height: calc(100vh - 8rem);
+    max-height: calc(100dvh - 8rem);
     margin: 0rem 0rem;
     background-image: linear-gradient(rgba(36, 42, 46, 0.8),
             rgba(36, 42, 46, 0.8));
@@ -10,4 +10,17 @@
     overflow: auto;
     scrollbar-color: var(--color-dark--2) rgba(36, 42, 46, 0.8);
     scrollbar-width: thin;
+}
+
+@media (max-width: 768px) {
+    .authors {
+        max-height: calc(100dvh - 8rem);
+        min-height: calc(50dvh - 8rem);
+        margin-bottom: 0.5rem;
+    }
+
+    .authors2 {
+        max-height: calc(50dvh);
+    }
+
 }

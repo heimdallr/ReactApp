@@ -11,8 +11,8 @@ class BookTitles extends Component {
     loading: false,
     searchTmp: "",
     titlesList: [],
-    sortHeadID: "",
-    sortRevers: false,
+    sortHeadID: "UpdateDate",
+    sortRevers: true,
   };
 
   componentDidMount() {

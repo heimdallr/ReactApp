@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./book-content.css";
 import BookContentBody from "../book-content-body/book-content-body";
-import { delay } from "framer-motion";
+// import { delay } from "framer-motion";
 
 function BookContent({
   maximazed,
@@ -13,6 +13,37 @@ function BookContent({
   handleNavTags,
   FileName,
 }) {
+  //Maximize || Minimize content || Change Font Size
+  //Jump to stored position
+  useEffect(() => {
+    const scrollableDiv = document.getElementById("scrollableDiv");
+    requestAnimationFrame(() => {
+      queueMicrotask(() => {
+        if (bookContent && scrollableDiv) {
+          if (localStorage.getItem("currentObject")) {
+            const currentObject = localStorage.getItem("currentObject");
+            const currentObjectPosition = localStorage.getItem("currentObjectPosition");
+
+            const elCollection = scrollableDiv.getElementsByTagName("p");
+            const { top: elTop } = elCollection[currentObject].getBoundingClientRect();
+
+            scrollableDiv.scrollTo(
+              0,
+              scrollableDiv.scrollTop + elTop - currentObjectPosition - scrollableDiv.getBoundingClientRect().top
+            );
+            localStorage.removeItem("currentObject");
+            localStorage.removeItem("currentObjectPosition");
+          } else {
+            scrollableDiv.scrollTo(
+              0,
+              (localStorage.getItem(FileName) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
+            );
+          }
+        }
+      });
+    });
+  }, [FileName, bookContent, maximazed, formFontSize]);
+
   //Display scroll progress and update on scroll event
   useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
@@ -28,14 +59,16 @@ function BookContent({
           const scrollPercent =
             (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
           progress.innerHTML = scrollPercent
-            ? `${autoScrollContent ? `🐾` : ""} ${scrollPercent.toFixed(3)}% ${
+            ? `<span class="readProgress fixed-bottom bg-dark text-info text-center"><span>${scrollPercent.toFixed(
+                3
+              )}%</span>${
                 autoScrollContent
-                  ? `🐾  <span class="ml-5">${Math.floor(totalSeconds / 3600 / 24) || ""} ${
+                  ? `<span class="ml-1">${Math.floor(totalSeconds / 3600 / 24) || ""} ${
                       Math.floor(totalSeconds / 3600 / 24) ? "д." : ""
                     }   ${date.toLocaleTimeString()}</span>`
                   : ""
               }`
-            : "";
+            : "</span>";
           localStorage.setItem(FileName, scrollPercent);
         },
         { passive: true }
@@ -43,36 +76,11 @@ function BookContent({
     }
   }, [FileName, scrollSpeed, autoScrollContent]);
 
-  //Maximize || Minimize content
-  useEffect(() => {
-    const scrollableDiv = document.getElementById("scrollableDiv");
-    if (bookContent && scrollableDiv) {
-      if (localStorage.getItem("currentObject")) {
-        const currentObject = localStorage.getItem("currentObject");
-        const currentObjectPosition = localStorage.getItem("currentObjectPosition");
-
-        const elCollection = scrollableDiv.getElementsByTagName("p");
-        const { top: elTop } = elCollection[currentObject].getBoundingClientRect();
-
-        scrollableDiv.scrollTo(
-          0,
-          scrollableDiv.scrollTop + elTop - currentObjectPosition - scrollableDiv.getBoundingClientRect().top
-        );
-        localStorage.removeItem("currentObject");
-        localStorage.removeItem("currentObjectPosition");
-      } else {
-        scrollableDiv.scrollTo(
-          0,
-          (localStorage.getItem(FileName) * (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) / 100
-        );
-      }
-    }
-  }, [bookContent, FileName, maximazed, formFontSize]);
-
   // Scroll content
   useEffect(() => {
     let interval = null;
     const scrollableDiv = document.getElementById("scrollableDiv");
+
     if (bookContent && scrollableDiv) {
       if (autoScrollContent) {
         interval = setInterval(function () {
@@ -89,44 +97,47 @@ function BookContent({
 
   useEffect(() => {
     const scrollableDiv = document.getElementById("scrollableDiv");
-    if (scrollableDiv && bookContent) {
-      delay(5000);
-      const sections = scrollableDiv.getElementsByClassName("section");
-      const navArray = [];
-      const { height, top } = scrollableDiv.firstElementChild.getBoundingClientRect();
-      //get sections info
-      if (sections) {
-        let counter = 0;
-        for (let i = 0; i < sections.length; i++) {
-          if (sections[i].getElementsByClassName("title").length) {
-            if (sections[i].getElementsByClassName("title")[0].innerText) {
-              navArray[counter] = {
-                innerText: sections[i].getElementsByClassName("title")[0].innerText,
-                level: 0,
-                sectionID: i,
-                size: sections[i].getBoundingClientRect().height,
-                heightPercentSize:
-                  ((sections[i].getBoundingClientRect().top - top - scrollableDiv.clientHeight / 2) /
-                    (height - scrollableDiv.clientHeight)) *
-                  100,
-                sectionHeightPercentSize: (sections[i].getBoundingClientRect().height / height) * 100,
-              };
-              counter++;
+    requestAnimationFrame(() => {
+      queueMicrotask(() => {
+        if (scrollableDiv && bookContent) {
+          const sections = scrollableDiv.getElementsByClassName("section");
+          const navArray = [];
+          const { height, top } = scrollableDiv.firstElementChild.getBoundingClientRect();
+          //get sections info
+          if (sections) {
+            let counter = 0;
+            for (let i = 0; i < sections.length; i++) {
+              if (sections[i].getElementsByClassName("title").length) {
+                if (sections[i].getElementsByClassName("title")[0].innerText) {
+                  navArray[counter] = {
+                    innerText: sections[i].getElementsByClassName("title")[0].innerText,
+                    level: 0,
+                    sectionID: i,
+                    size: sections[i].getBoundingClientRect().height,
+                    heightPercentSize:
+                      ((sections[i].getBoundingClientRect().top - top - scrollableDiv.clientHeight / 2) /
+                        (height - scrollableDiv.clientHeight)) *
+                      100,
+                    sectionHeightPercentSize: (sections[i].getBoundingClientRect().height / height) * 100,
+                  };
+                  counter++;
+                }
+              }
             }
           }
-        }
-      }
-      //leveling sections
-      for (let i = 0; i < navArray.length; i++) {
-        for (let j = 0; j < navArray.length; j++) {
-          if (i !== j && sections[navArray[i].sectionID].contains(sections[navArray[j].sectionID])) {
-            navArray[j].level = navArray[i].level + 1;
+          //leveling sections
+          for (let i = 0; i < navArray.length; i++) {
+            for (let j = 0; j < navArray.length; j++) {
+              if (i !== j && sections[navArray[i].sectionID].contains(sections[navArray[j].sectionID])) {
+                navArray[j].level = navArray[i].level + 1;
+              }
+            }
           }
+          handleNavTags(navArray);
         }
-      }
-      handleNavTags(navArray);
-    }
-  }, [bookContent, handleNavTags]);
+      });
+    });
+  }, [bookContent, handleNavTags, maximazed, formFontSize]);
 
   return (
     <>
