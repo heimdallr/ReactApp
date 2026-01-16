@@ -137,23 +137,6 @@ br {
     padding-bottom: 2rem;
 }
 
-.cite {
-    font-style: italic;
-    border-color: black;
-    background-color: whitesmoke;
-    background-image:
-        linear-gradient(90deg, transparent 79px, #bbbbbb 79px, #bbbbbb 81px, transparent 81px),
-        linear-gradient(#eee .1em, transparent .1em);
-    background-size: 100% 1.2em;
-    color: darkblue;
-    border-radius: 5px;
-    padding-left: 5rem;
-    padding-right: 2rem;
-    padding-bottom: 1rem;
-    margin: 2rem;
-    box-shadow: 0px -10px 30px black;
-}
-
 .readProgress {
     /* position: absolute; */
     /* left: 50%;
@@ -162,4 +145,20 @@ br {
     padding: 0;
     margin: 0;
     transition: all 0.5s ease-in-out;
+}
+
+.timeProgress {
+    position: absolute;
+    color: black;
+    background-color: rgb(220, 205, 158);
+    padding: 0rem 0.8rem;
+    border-radius: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 1.2rem;
+    z-index: 100;
+    -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.4) inset;
+    -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.4) inset;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.4) inset;
+    opacity: 0.85;
 }

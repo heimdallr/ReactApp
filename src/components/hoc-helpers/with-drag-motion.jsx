@@ -16,7 +16,7 @@ const WithDragMotion = (props) => {
         left: "50%",
         zIndex: 1,
       }}
-      drag
+      drag={width > 768}
       dragConstraints={dragBorders}
       whileDrag={{ scale: 1.02 }}
       transition={{ type: "spring", duration: 1 }}

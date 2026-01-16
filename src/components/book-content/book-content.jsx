@@ -49,6 +49,7 @@ function BookContent({
     const scrollableDiv = document.getElementById("scrollableDiv");
     if (scrollableDiv) {
       const progress = document.getElementById("progress");
+      const timeProgress = document.getElementById("timeProgress");
 
       scrollableDiv.addEventListener(
         "scroll",
@@ -59,16 +60,16 @@ function BookContent({
           const scrollPercent =
             (scrollableDiv.scrollTop / (scrollableDiv.scrollHeight - scrollableDiv.clientHeight)) * 100;
           progress.innerHTML = scrollPercent
-            ? `<span class="readProgress fixed-bottom bg-dark text-info text-center"><span>${scrollPercent.toFixed(
-                3
-              )}%</span>${
-                autoScrollContent
-                  ? `<span class="ml-1">${Math.floor(totalSeconds / 3600 / 24) || ""} ${
-                      Math.floor(totalSeconds / 3600 / 24) ? "д." : ""
-                    }   ${date.toLocaleTimeString()}</span>`
-                  : ""
-              }`
-            : "</span>";
+            ? `<span class="readProgress bg-dark text-warning text-center">${scrollPercent.toFixed(3)}%</span>`
+            : "Навигация";
+
+          timeProgress.innerHTML = autoScrollContent
+            ? `<span class="timeProgress">
+              ${Math.floor(totalSeconds / 3600 / 24) || ""} ${
+                Math.floor(totalSeconds / 3600 / 24) ? "д." : ""
+              } ${date.toLocaleTimeString()}
+            </span>`
+            : ``;
           localStorage.setItem(FileName, scrollPercent);
         },
         { passive: true }
