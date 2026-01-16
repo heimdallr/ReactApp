@@ -1,4 +1,4 @@
 .loading,
 .read {
-    width: 9rem;
+    min-width: 5rem;
 }

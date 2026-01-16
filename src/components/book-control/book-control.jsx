@@ -55,15 +55,15 @@ export class BookControl extends Component {
                 this.handleNavigationHoover();
               }}
             >
-              Навигация
+              <span id="progress">Навигация</span>
               {navTags.length > 0 && displayBookContent && (
                 <BookNavigation navTags={navTags} FileName={FileName} readerPosition={readerPosition} />
               )}
             </span>
 
             <span className="ml-auto p-0 align-self-baseline mr-1 mt-1">
-              <span id="progress" className=""></span>
               {/* AutoscrollContent */}
+              <span id="timeProgress"></span>
               <span className="mr-1">
                 <span
                   title="Уменьшить скорость прокрутки: клавиша минус во время прокрутки текста"
@@ -74,17 +74,17 @@ export class BookControl extends Component {
                 >
                   ➖
                 </span>
-                <span
+                <div
                   title="Автопрокрутка текста: Ins"
-                  className={`btn-${
-                    autoScrollContent ? "info" : "outline-info"
-                  } pl-1 pr-1 pt-0 pb-0 btn btn-sm text-light align-self-baseline mr-1`}
+                  className={`btn${
+                    autoScrollContent ? "" : `-outline`
+                  }-info pl-1 pr-1 pt-0 pb-0 btn btn-sm text-light align-self-baseline mr-1`}
                   onClick={() => {
                     this.props.handleAutoScrollContent();
                   }}
                 >
-                  ⏭ {scrollSpeed}
-                </span>
+                  <span>{`⏭ ${scrollSpeed}`}</span>
+                </div>
                 <span
                   title="Увеличить скорость прокрутки: клавиша плюс во время прокрутки текста"
                   className="mr-1 btn-info p-0 btn btn-sm text-dark align-self-baseline"
