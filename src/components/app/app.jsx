@@ -20,6 +20,7 @@ class App extends Component {
     scope: "bookTitles",
     genres: [],
     groups: [],
+    converters: [],
     selectedGroupID: null,
     selectedItemID: null,
     numberOfBooks: null,
@@ -164,7 +165,7 @@ class App extends Component {
 
   render() {
     const { authors, bookSeries, bookTitles } = this.state.searchStats;
-    const { scope, searchTmp, selectedItemID, selectedGroupID, linkToExtBookReader } = this.state;
+    const { scope, searchTmp, selectedItemID, selectedGroupID, linkToExtBookReader, converters } = this.state;
     return (
       <React.Fragment>
         {selectedItemID && (
@@ -175,6 +176,7 @@ class App extends Component {
             handleAuthorSelection={this.handleAuthorSelection}
             handleSeriesSelection={this.handleSeriesSelection}
             linkToExtBookReader={linkToExtBookReader}
+            converters={converters}
           />
         )}
         <div className="card shadow ">

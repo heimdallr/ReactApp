@@ -243,7 +243,7 @@ class BookForm extends Component {
           localStorage.setItem("currentObject", i);
           localStorage.setItem(
             "currentObjectPosition",
-            elCollection[i].getBoundingClientRect().top - scrollableDiv.getBoundingClientRect().top
+            elCollection[i].getBoundingClientRect().top - scrollableDiv.getBoundingClientRect().top,
           );
           break; // Found the first visible one, exit loop
         }
@@ -321,7 +321,7 @@ class BookForm extends Component {
       bookCover,
       navTags,
     } = this.state;
-    const { linkToExtBookReader } = this.props;
+    const { linkToExtBookReader, converters } = this.props;
     const readerPosition = localStorage.getItem(FileName) * 1;
     const styleContentMaximazed = {
       position: "fixed",
@@ -379,6 +379,7 @@ class BookForm extends Component {
             bookContentLoading={bookContentLoading}
             bookCover={bookCover}
             linkToExtBookReader={linkToExtBookReader}
+            converters={converters}
           />
         )}
       </span>

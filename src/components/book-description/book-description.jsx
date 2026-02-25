@@ -2,6 +2,26 @@ import React, { Component } from "react";
 import "./book-description.css";
 
 export class BookDescription extends Component {
+  convertersList = (_baseUrl, BookID) => {
+    return (
+      <tr>
+        <td className="text-left">Конвертировать</td>
+        <td className="text-right">
+          {this.props.converters.map((item) => {
+            return (
+              <a
+                key={item}
+                className="btn btn-sm btn-outline-warning pt-0 pb-0 mr-1 shadow"
+                href={`${_baseUrl}Images/fb2/${BookID}?profile=${item}`}
+              >
+                {item}
+              </a>
+            );
+          })}
+        </td>
+      </tr>
+    );
+  };
   render() {
     const {
       bookForm: { BookID, SeriesTitle, LibRate, FileName, BookSize, Genres, Ext },
@@ -14,7 +34,9 @@ export class BookDescription extends Component {
       _baseUrl,
       bookContentLoading,
       bookCover,
+      converters,
     } = this.props;
+    console.log(converters);
     return (
       <div className="d-flex flex-column flex-md-row align-items-center justify-content-center">
         <table
@@ -115,6 +137,7 @@ export class BookDescription extends Component {
                   )}
                 </td>
               </tr>
+              {converters && converters.length > 0 ? this.convertersList(_baseUrl, BookID) : <></>}
             </tbody>
           </table>
         </div>
