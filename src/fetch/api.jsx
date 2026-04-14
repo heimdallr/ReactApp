@@ -1,3 +1,4 @@
+import axios from "axios";
 class Api {
   // _baseUrl = "http://192.168.3.31:9080/";
   _baseUrl = "/";
@@ -30,19 +31,42 @@ class Api {
     }
   }
 
-  async getText(url) {
+  async getText(url, handleDownloadProgress = null) {
     try {
-      const res = await fetch(`${this._baseUrl}${url}`, {
-        credentials: "include",
+      const res = await axios.get(`${this._baseUrl}${url}`, {
+        onDownloadProgress: (progressEvent) => {
+          // total is only available if the server sends the Content-Length header
+          const total = progressEvent.total;
+          const current = progressEvent.loaded;
+
+          if (total && handleDownloadProgress) {
+            let percentage = Math.floor((current * 100) / total);
+            handleDownloadProgress(percentage);
+          }
+        },
       });
-      if (!res.ok) {
+
+      if (res.statusText !== "OK") {
         throw new Error(`Could not fetch ${url}, received ${res.status}`);
       }
-      return await res.text();
+      return res.data;
     } catch (err) {
       console.log(err, `Could not fetch ${url}`);
     }
   }
+  // async getText(url) {
+  //   try {
+  //     const res = await fetch(`${this._baseUrl}${url}`, {
+  //       credentials: "include",
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error(`Could not fetch ${url}, received ${res.status}`);
+  //     }
+  //     return await res.text();
+  //   } catch (err) {
+  //     console.log(err, `Could not fetch ${url}`);
+  //   }
+  // }
 
   async postData(url, data = []) {
     let controller = new AbortController();

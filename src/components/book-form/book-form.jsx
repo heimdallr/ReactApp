@@ -48,6 +48,10 @@ class BookForm extends Component {
     document.removeEventListener("keydown", this.keydownFunction, false);
   }
 
+  handleDownloadProgress = (percentage) => {
+    this.setState({ bookContentLoading: `Загрузка ${percentage}%` });
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.selectedItemID !== nextProps.selectedItemID || this.state !== nextState) {
       return true;
@@ -58,7 +62,7 @@ class BookForm extends Component {
   getRecord = () => {
     this.setState({
       loading: true,
-      bookContentLoading: true,
+      bookContentLoading: "Загрузка карточки",
       bookContent: null,
       bookCover: null,
       bookForm: {},
@@ -74,19 +78,19 @@ class BookForm extends Component {
     });
     const { selectedItemID } = this.props;
     this.props.apiData.getBookForm({ selectedItemID }).then((res) => {
-      this.setState({ ...res, loading: false });
+      this.setState({ ...res, loading: false, bookContentLoading: "Загрузка обложки" });
       this.getBookCover(selectedItemID);
     });
   };
   getBookCover = (selectedItemID) => {
     this.props.apiData.getCover({ BookID: selectedItemID }).then((res) => {
-      this.setState({ bookCover: URL.createObjectURL(res), loading: false });
+      this.setState({ bookCover: URL.createObjectURL(res), loading: false, bookContentLoading: "Подготовка книги" });
       this.getBookContent(selectedItemID);
     });
   };
 
   getBookContent = (selectedItemID) => {
-    this.props.apiData.getBook({ BookID: selectedItemID }).then((res) => {
+    this.props.apiData.getBook({ BookID: selectedItemID }, this.handleDownloadProgress).then((res) => {
       this.setState({ bookContentLoading: false, bookContent: fb2Parser(res) });
     });
   };

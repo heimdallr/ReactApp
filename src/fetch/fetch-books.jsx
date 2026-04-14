@@ -8,13 +8,13 @@ export default class FetchBooks {
 
   getSearchStats = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchStats?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
+      `main/getBooks/getSearchStats?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`,
     );
   };
 
   getSearchAuthors = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchAuthors?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
+      `main/getBooks/getSearchAuthors?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`,
     );
   };
 
@@ -22,13 +22,13 @@ export default class FetchBooks {
     return await this.apiData.getResourse(
       `main/getBooks/getSearchAuthorBooks?selectedItemID=${selectedItemID}${
         selectedGroupID ? `&selectedGroupID=${selectedGroupID}` : ``
-      }`
+      }`,
     );
   };
 
   getSearchSeries = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchSeries?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
+      `main/getBooks/getSearchSeries?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`,
     );
   };
 
@@ -36,13 +36,13 @@ export default class FetchBooks {
     return await this.apiData.getResourse(
       `main/getBooks/getSearchSeriesBooks?selectedItemID=${selectedItemID}${
         selectedGroupID ? `&selectedGroupID=${selectedGroupID}` : ``
-      }`
+      }`,
     );
   };
 
   getSearchTitles = async ({ search, selectedGroupID }) => {
     return await this.apiData.getResourse(
-      `main/getBooks/getSearchTitles?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`
+      `main/getBooks/getSearchTitles?${selectedGroupID ? `selectedGroupID=${selectedGroupID}` : `search=${search}`}`,
     );
   };
 
@@ -50,8 +50,8 @@ export default class FetchBooks {
     return await this.apiData.getResourse(`main/getBooks/getBookForm?selectedItemID=${selectedItemID}`);
   };
 
-  getBook = async ({ BookID }) => {
-    return await this.apiData.getText(`Images/fb2/${BookID}`);
+  getBook = async ({ BookID }, handleDownloadProgress = null) => {
+    return await this.apiData.getText(`Images/fb2/${BookID}`, handleDownloadProgress);
   };
 
   getCover = async ({ BookID }) => {

@@ -34,7 +34,7 @@ export class BookControl extends Component {
     );
     const bookIsLoading = (
       <span className="btn btn-sm loading btn-outline-info ml-2 mt-1 pt-0 pb-0 mr-auto align-self-baseline">
-        Загрузка
+        {bookContentLoading}
         {readerPosition ? ` (${readerPosition.toFixed(2)}%)` : null}
       </span>
     );
