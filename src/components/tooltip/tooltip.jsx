@@ -26,7 +26,7 @@ const Tooltip = (props) => {
     >
       {/* Wrapping */}
       {props.children}
-      {active && (
+      {active && props.content && (
         <div className={`Tooltip-Tip ${props.direction || "top"} pt-0 pb-0`}>
           {/* Content */}
           {props.content}

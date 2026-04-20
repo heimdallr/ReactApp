@@ -36,7 +36,6 @@ export class BookDescription extends Component {
       bookCover,
       converters,
     } = this.props;
-    console.log(converters);
     return (
       <div className="d-flex flex-column flex-md-row align-items-center justify-content-center">
         <table

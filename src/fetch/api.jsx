@@ -1,7 +1,7 @@
 import axios from "axios";
 class Api {
-  // _baseUrl = "http://192.168.3.31:9080/";
-  _baseUrl = "/";
+  _baseUrl = "http://192.168.3.31:9080/";
+  // _baseUrl = "/";
 
   async getResourse(url) {
     try {

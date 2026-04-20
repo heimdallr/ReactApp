@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import Spinner from "../spinner";
 import { withErrorBoundary } from "../hoc-helpers";
+import Tooltip from "../tooltip/tooltip";
 
 class BookTitles extends Component {
   state = {
@@ -69,6 +70,14 @@ class BookTitles extends Component {
     return result.map((item) => {
       const colorStyle = item.BookID === this.props.selectedItemID ? "text-dark bg-warning" : "text-light";
       const starRating = Array(item.LibRate * 1 + 1).join("☆");
+      const userRating = (
+        <Tooltip
+          direction={"right"}
+          content={item.UserRate ? `Прочитано ${Array(item.UserRate * 1 + 1).join("☆")}` : ""}
+        >
+          {item.UserRate && "✔"}
+        </Tooltip>
+      );
       const bookProgress = localStorage.getItem(item.FileName) * 1;
       const bookSize =
         item.BookSize > 1000 * 1000
@@ -87,15 +96,21 @@ class BookTitles extends Component {
           <td
             style={{
               background: `${
-                bookProgress ? "linear-gradient(90deg,rgba(18, 140, 249, 1) 0%,rgba(18, 140, 249, 0) 80%" : 0
+                bookProgress && !item.UserRate
+                  ? "linear-gradient(90deg,rgba(18, 140, 249, 0.5) 0%,rgba(18, 140, 249, 0) 80%"
+                  : item.UserRate !== null &&
+                    "linear-gradient(90deg,rgba(18, 249, 140, 0.5) 0%,rgba(18, 140, 249, 0) 80%"
               }`,
             }}
             onClick={() => this.props.handleSelectItem(item.BookID)}
           >
-            {bookProgress ? (
-              <span className="badge badge-light mr-1 align-top pt-0 pb-0 shadow">{`${Number(
-                bookProgress.toFixed(1)
-              )}%`}</span>
+            {item.UserRate !== null && (
+              <span className="badge badge-light mr-1 align-top pt-0 pb-0 shadow">{userRating}</span>
+            )}
+            {bookProgress && !item.UserRate ? (
+              <span className="badge badge-light mr-1 align-top pt-0 pb-0 shadow">
+                {`${Number(bookProgress.toFixed(1))}%`}
+              </span>
             ) : (
               ""
             )}
@@ -131,7 +146,7 @@ class BookTitles extends Component {
             {item.BookSize === null ? "" : bookSize}
           </td>
           <td onClick={() => this.props.handleSelectItem(item.BookID)}>{item.Genres === null ? "" : item.Genres}</td>
-          <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
+          <td className="text-center p-0" onClick={() => this.props.handleSelectItem(item.BookID)}>
             {item.LibRate === null ? "" : starRating}
           </td>
           <td className="text-center" onClick={() => this.props.handleSelectItem(item.BookID)}>
