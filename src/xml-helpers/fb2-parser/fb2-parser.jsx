@@ -21,11 +21,11 @@ function fb2Parser(bookContent) {
       binary = parser.parse(bookContent.slice(bookContent.indexOf("<binary"), bookContent.indexOf("</FictionBook>")));
       if (Array.isArray(binary.binary)) {
         binary.binary.map(function (item) {
-          const regex = new RegExp('<image (.):href="#' + item["@_id"] + '"/>', "g");
+          const regex = new RegExp('<im(.){1,30}:href="#' + item["@_id"] + '"[^>]{1,30}>', "g");
           if (text.match(regex)) {
             text = text.replaceAll(
               regex,
-              `<div class="text-center image ml-auto mr-auto col-auto p-0"><img src="data:image/png;base64, ${item["#text"]}" alt="img"/></div>`
+              `<div class="text-center image ml-auto mr-auto col-auto p-0"><img src="data:image/png;base64, ${item["#text"]}" alt="img"/></div>`,
             );
           }
         });
@@ -36,7 +36,7 @@ function fb2Parser(bookContent) {
       if (bookContent.includes('<body name="notes">')) {
         const notes = bookContent.slice(
           bookContent.indexOf('<body name="notes">'),
-          bookContent.lastIndexOf("</body>") + 7
+          bookContent.lastIndexOf("</body>") + 7,
         );
         // const regex = new RegExp('(.):href="#', "g");
         // text = text.replaceAll(regex, ' href="#');
@@ -52,7 +52,7 @@ function fb2Parser(bookContent) {
                 typeof item["p"] === "string"
                   ? `title="${item["p"]}"`
                   : `title="${item["p"] !== undefined && item["p"]["#text"] !== undefined ? item["p"]["#text"] : ""}"`
-              } href="#${item["@_id"]}">`
+              } href="#${item["@_id"]}">`,
             );
             // }
           });
