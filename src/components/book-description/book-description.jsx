@@ -36,6 +36,7 @@ export class BookDescription extends Component {
       bookCover,
       converters,
     } = this.props;
+    const seriesList = this.props.seriesList();
     return (
       <div className="d-flex flex-column flex-md-row align-items-center justify-content-center">
         <table
@@ -64,10 +65,10 @@ export class BookDescription extends Component {
                 <td>Авторы</td>
                 <td>{this.props.authorsList()}</td>
               </tr>
-              {SeriesTitle && (
+              {seriesList && (
                 <tr>
                   <td>Серия</td>
-                  <td>{this.props.seriesList()}</td>
+                  <td>{seriesList}</td>
                 </tr>
               )}
 

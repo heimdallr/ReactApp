@@ -23,7 +23,7 @@ class BookTitlesByAuthor extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedItemID !== this.props.selectedItemID) {
-      this.setState({ loading: true });
+      this.setState({ titlesList: [], loading: true });
       this.getRecords();
     }
   }
@@ -106,7 +106,7 @@ class BookTitlesByAuthor extends Component {
           <td
             className={`text-info alias`}
             onClick={() => {
-              this.props.handleSeriesSelection(item.SeriesTitle);
+              if (item.SeriesTitle) this.props.handleSeriesSelection(item.SeriesTitle);
             }}
           >
             {item.SeriesTitle}

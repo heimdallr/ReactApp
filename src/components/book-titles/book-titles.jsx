@@ -73,9 +73,9 @@ class BookTitles extends Component {
       const userRating = (
         <Tooltip
           direction={"right"}
-          content={item.UserRate ? `Прочитано ${Array(item.UserRate * 1 + 1).join("☆")}` : ""}
+          content={item.UserRate >= 0 ? `Прочитано ${Array(item.UserRate * 1 + 1).join("☆")}` : ""}
         >
-          {item.UserRate && "✔"}
+          {item.UserRate >= 0 && "✔"}
         </Tooltip>
       );
       const bookProgress = localStorage.getItem(item.FileName) * 1;
@@ -131,7 +131,7 @@ class BookTitles extends Component {
           <td
             className={`text-info alias`}
             onClick={() => {
-              this.props.handleSeriesSelection(item.SeriesTitle);
+              if (item.SeriesTitle) this.props.handleSeriesSelection(item.SeriesTitle);
             }}
           >
             {item.SeriesTitle}

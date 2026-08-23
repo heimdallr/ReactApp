@@ -23,7 +23,7 @@ class BookTitlesBySeries extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedItemID !== this.props.selectedItemID) {
-      this.setState({ loading: true });
+      this.setState({ titlesList: [], loading: true });
       this.getRecords();
     }
   }
