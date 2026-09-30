@@ -20,26 +20,25 @@ function(get_nodejs)
     	URL ${nodejs_url}
 	)
 	
-	if("${NPM_EXECUTABLE}" STREQUAL "" OR NOT EXISTS ${NPM_EXECUTABLE})
-		message(STATUS "trying to fetch nodejs")
-		FetchContent_Populate(nodejs_bin)
+	message(STATUS "trying to fetch nodejs")
+	FetchContent_Populate(nodejs_bin)
 
-		set(NODE_PATH "${nodejs_bin_SOURCE_DIR}")
-		if(WIN32)
-    		set(NPM_EXECUTABLE "${NODE_PATH}/npm.cmd" CACHE INTERNAL "")
-		else()
-    		set(NPM_EXECUTABLE "${NODE_PATH}/bin/npm" CACHE INTERNAL "")
-		endif()
-
-		message(STATUS "trying to npm install")
-		execute_process(
-			COMMAND ${NPM_EXECUTABLE} install --save npm react react-dom 
-			WORKING_DIRECTORY "${nodejs_bin_SOURCE_DIR}"
-			RESULT_VARIABLE NPM_RESULT
-		)
-		if(NOT NPM_RESULT EQUAL 0)
-			message(FATAL_ERROR "${NPM_EXECUTABLE} install --save npm react react-dom failed")
-		endif()
+	set(NODE_PATH "${nodejs_bin_SOURCE_DIR}")
+	if(WIN32)
+   		set(NPM_EXECUTABLE "${NODE_PATH}/npm.cmd" CACHE INTERNAL "")
+	else()
+   		set(NPM_EXECUTABLE "${NODE_PATH}/bin/npm" CACHE INTERNAL "")
 	endif()
+
+	message(STATUS "trying to npm install")
+	execute_process(
+		COMMAND ${NPM_EXECUTABLE} install --save npm react react-dom 
+		WORKING_DIRECTORY "${nodejs_bin_SOURCE_DIR}"
+		RESULT_VARIABLE NPM_RESULT
+	)
+	if(NOT NPM_RESULT EQUAL 0)
+		message(FATAL_ERROR "${NPM_EXECUTABLE} install --save npm react react-dom failed")
+	endif()
+
 	message(STATUS "npm path: ${NPM_EXECUTABLE}")	
 endfunction()
