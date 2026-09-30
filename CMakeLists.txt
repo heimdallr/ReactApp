@@ -1,5 +1,5 @@
 if(${NPM_EXECUTABLE} STREQUAL "" OR NOT EXISTS ${NPM_EXECUTABLE})
-	message(WARNING "npm not found")
+	message(WARNING "npm not found: ${NPM_EXECUTABLE}")
 	return()
 endif()
 
