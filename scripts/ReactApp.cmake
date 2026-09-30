@@ -20,7 +20,7 @@ function(get_nodejs)
 	)
 	
 	message(STATUS "trying to fetch nodejs")
-	FetchContent_Populate(nodejs_bin)
+	FetchContent_MakeAvailable(nodejs_bin)
 
 	if(WIN32)
    		set(NPM_EXECUTABLE "${nodejs_bin_SOURCE_DIR}/npm.cmd" CACHE INTERNAL "")
