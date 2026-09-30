@@ -1,7 +1,6 @@
 import axios from "axios";
 class Api {
-  _baseUrl = "http://192.168.3.31:8000/";
-  // _baseUrl = "/";
+  _baseUrl = "/";
 
   async getResourse(url) {
     try {
